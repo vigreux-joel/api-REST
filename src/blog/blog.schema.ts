@@ -1,18 +1,26 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export type BlogDocument = Blog & Document;
 
 @Schema()
 export class Blog {
     @Prop()
-    AuthorName: string;
+    title: string;
 
-    @Prop()
-    title: number;
+    @Prop({
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    })
+    Author
 
     @Prop()
     contents: string;
+
+    @Prop({
+        type: Date,
+    })
+    publishedAt
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

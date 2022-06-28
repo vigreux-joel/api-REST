@@ -7,6 +7,8 @@ import {Model} from "mongoose";
 import {MongooseSchemasModule} from "../mongoose-schemas/mongoose-schemas-module";
 import {UserModule} from "../user/user.module";
 import {User} from "../user/user.schema";
+import {BlogModule} from "../blog/blog.module";
+import {Blog} from "../blog/blog.schema";
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -15,22 +17,37 @@ AdminJS.registerAdapter(AdminJSMongoose)
         Admin.createAdminAsync({
             imports: [
                 MongooseSchemasModule,
-                UserModule
+                UserModule,
+                BlogModule
             ],
             inject: [
                 getModelToken('User'),
+                getModelToken('Blog'),
             ],
-            useFactory: (userModel: Model<User>) => ({
+            useFactory: (userModel: Model<User>, blogModel: Model<Blog>) => ({
                 adminJsOptions: {
                     rootPath: '/admin',
                     resources: [
                         { resource: userModel },
+                        { resource:
+                            blogModel,
+                            options: {
+                                properties: {
+                                    contents: {
+                                        type: 'richtext'
+                                    }
+                                }
+                            }
+                        }
                     ],
-                    auth: {
-                        authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-                        cookieName: 'test',
-                        cookiePassword: 'testPass',
+                    branding: {
+                        companyName: process.env.SITE_NAME,
                     },
+                },
+                auth: {
+                    authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+                    cookieName: 'test',
+                    cookiePassword: 'testPass',
                 },
             }),
         }),
