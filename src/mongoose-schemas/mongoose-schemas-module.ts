@@ -4,7 +4,7 @@ import {UserSchema} from "../user/user.schema";
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: 'Admin', schema: UserSchema }]),
+        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     ],
     exports: [MongooseModule],
 })
