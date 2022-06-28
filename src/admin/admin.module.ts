@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import AdminJS from "adminjs";
 import * as AdminJSMongoose from '@adminjs/mongoose'
-import {BlogModule} from "../blog/blog.module";
 import {AdminModule as Admin} from "@adminjs/nestjs";
 import {getModelToken} from "@nestjs/mongoose";
-import {Blog} from "../blog/blog.schema";
 import {Model} from "mongoose";
 import {MongooseSchemasModule} from "../mongoose-schemas/mongoose-schemas-module";
 
