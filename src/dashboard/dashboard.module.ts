@@ -9,6 +9,7 @@ import {UserModule} from "../user/user.module";
 import {User} from "../user/user.schema";
 import {BlogModule} from "../blog/blog.module";
 import {Blog} from "../blog/blog.schema";
+import * as bcrypt from 'bcrypt';
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -28,7 +29,31 @@ AdminJS.registerAdapter(AdminJSMongoose)
                 adminJsOptions: {
                     rootPath: '/admin',
                     resources: [
-                        { resource: userModel },
+                        { resource: userModel,
+                            options: {
+                                parent: {
+                                    name: 'Utilisateurs',
+                                    icon: 'User',
+                                },
+                                properties: {
+                                    password: {
+                                        isVisible: { edit: true },
+                                    },
+                                    createdAt:{
+                                        isVisible: { list: true, filter: true, show: true },
+                                    }
+                                },
+                                listProperties: ['firstname','lastname','email'],
+                                actions: {
+                                    new: {
+                                        before: async (request) => {
+                                            request.payload.createdAt = new Date
+                                            return request
+                                        },
+                                    }
+                                },
+                            }
+                        },
                         { resource:
                             blogModel,
                             options: {
@@ -44,11 +69,11 @@ AdminJS.registerAdapter(AdminJSMongoose)
                         companyName: process.env.SITE_NAME,
                     },
                 },
-                auth: {
-                    authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-                    cookieName: 'test',
-                    cookiePassword: 'testPass',
-                },
+                // auth: {
+                //     authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+                //     cookieName: 'test',
+                //     cookiePassword: 'test',
+                // },
             }),
         }),
     ]
