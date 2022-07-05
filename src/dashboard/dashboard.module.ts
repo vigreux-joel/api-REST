@@ -6,10 +6,10 @@ import {getModelToken} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {MongooseSchemasModule} from "../mongoose-schemas/mongoose-schemas-module";
 import {UserModule} from "../user/user.module";
-import {User} from "../user/user.schema";
 import {BlogModule} from "../blog/blog.module";
 import {Blog} from "../blog/blog.schema";
 import * as bcrypt from 'bcrypt';
+import {UserEntity} from "../user/entities/user.entity";
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -25,7 +25,7 @@ AdminJS.registerAdapter(AdminJSMongoose)
                 getModelToken('User'),
                 getModelToken('Blog'),
             ],
-            useFactory: (userModel: Model<User>, blogModel: Model<Blog>) => ({
+            useFactory: (userModel: Model<UserEntity>, blogModel: Model<Blog>) => ({
                 adminJsOptions: {
                     rootPath: '/admin',
                     resources: [

@@ -10,7 +10,7 @@ export class Blog {
 
     @Prop({
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'UserEntity'
     })
     Author
 
