@@ -10,7 +10,6 @@ const port = process.env.PORT;
 
 async function bootstrap() {
 
-  console.log('egsegeeg')
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());

@@ -28,11 +28,11 @@ export class UserService {
     }
     let result
     try {
-      result = await this.userModel.find(filter);
+      result = await this.userModel.findOne(filter);
     } catch (e){
       throw ({message: 'invalid id'})
     }
-    if (!result.length){
+    if (!result){
       throw ({message: 'not found user'})
     }
     return result
