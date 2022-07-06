@@ -13,7 +13,7 @@ export class UserController {
   @Post()
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create user'})
-  @ApiResponse({type: UserEntity})
+  @ApiResponse({status: 201, type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       return await this.userService.create(createUserDto);
@@ -27,12 +27,14 @@ export class UserController {
 
   @Get()
   @ApiOperation({summary: 'Get all users'})
+  @ApiResponse({status: 200, type: [UserEntity]})
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({summary: 'Get user by id'})
+  @ApiResponse({status: 200, type: UserEntity})
   async findOne(@Param('id') id: string) {
     try {
       return await this.userService.findOne(id);
@@ -45,6 +47,7 @@ export class UserController {
 
   @Patch(':id')
   @ApiOperation({summary: 'Update user'})
+  @ApiResponse({status: 200, type: UserEntity})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
       return await this.userService.update(id, updateUserDto);
@@ -58,6 +61,7 @@ export class UserController {
 
   @Delete(':id')
   @ApiOperation({summary: 'Delete user'})
+  @ApiResponse({status: 200, type: UserEntity})
   async remove(@Param('id') id: string) {
     try {
       return await this.userService.remove(id);

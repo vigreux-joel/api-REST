@@ -1,5 +1,5 @@
 import {Prop, Schema} from "@nestjs/mongoose";
-import {ApiProperty} from "@nestjs/swagger";
+import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
 @Schema()
 export class UserEntity {
@@ -28,7 +28,7 @@ export class UserEntity {
 
     @Prop({
     })
-    @ApiProperty({ example: '+33100000000'})
+    @ApiPropertyOptional({ example: '+33100000000'})
     tel: string;
 
     @Prop({
