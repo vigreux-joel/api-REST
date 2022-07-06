@@ -22,10 +22,13 @@ export class UserService {
     return this.userModel.find();
   }
 
-  async findOne(id: string) {
+  async findOne(filter: string|object) {
+    if(typeof filter  == 'string'){
+      filter = {'_id': filter}
+    }
     let result
     try {
-      result = await this.userModel.find({'_id': id});
+      result = await this.userModel.find(filter);
     } catch (e){
       throw ({message: 'invalid id'})
     }
