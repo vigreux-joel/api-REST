@@ -13,8 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
 
-    //token validator
+    //token get content
     async validate(payload: any) {
-        return { userId: payload.Id};
+        return { id: payload.id};
     }
 }
