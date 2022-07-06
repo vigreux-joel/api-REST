@@ -12,7 +12,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
+
+    //token validator
     async validate(payload: any) {
-        return { userId: payload.sub, username: payload.username };
+        return { userId: payload.Id};
     }
 }

@@ -8,20 +8,20 @@ import {JwtService} from "@nestjs/jwt";
 export class AuthService {
     constructor(private userService: UserService, private jwtService: JwtService) {}
 
-    async validateUser(username: string, password: string): Promise<any> {
+    async validateUser(identifier: string, password: string): Promise<any> {
         let user:UserEntity
         try{
-            user = await this.userService.findOne({email: username})
+            user = await this.userService.findOne({email: identifier})
         } catch (e){
             return false
         }
         return bcrypt.compare(password, user.password)
     }
 
-    async login(user: any) {
-        const payload = { username: user.email, sub: user.userId };
+    //token content
+    async login(payload: any) {
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign({identifier: payload.identifier}),
         };
     }
 }

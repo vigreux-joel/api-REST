@@ -19,7 +19,7 @@ export class AuthController {
     @ApiOperation({summary: 'Sign in to an account'})
     @Post('login')
     async login(@Request() req: Request) {
-        return this.authService.login(req);
+        return this.authService.login(req.body);
     }
 
     @UseGuards(JwtAuthGuard)
