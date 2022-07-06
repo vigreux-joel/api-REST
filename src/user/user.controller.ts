@@ -11,6 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @ApiTags('Auth')
   @ApiOperation({summary: 'Create user'})
   @ApiResponse({type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
