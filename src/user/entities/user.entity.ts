@@ -2,7 +2,8 @@ import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
 @Schema()
-export class UserEntity {
+export class User {
+
     @Prop({
         required: true,
     })
@@ -43,4 +44,5 @@ export class UserEntity {
     })
     @ApiProperty({ example: '2022-06-30T12:10:27.092Z'})
     createdAt: Date;
+
 }

@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {UserEntity} from "./entities/user.entity";
+import {User} from "./entities/user.entity";
 
 @ApiTags('Users')
 @Controller('user')
@@ -13,10 +13,10 @@ export class UserController {
   @Post()
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create user'})
-  @ApiResponse({status: 201, type: UserEntity})
-  async create(@Body() createUserDto: CreateUserDto) {
+  @ApiResponse({status: 201, type: User})
+  async createUser(@Body() createUserDto: CreateUserDto) {
     try {
-      return await this.userService.create(createUserDto);
+      return await this.userService.createUser(createUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
@@ -27,17 +27,17 @@ export class UserController {
 
   @Get()
   @ApiOperation({summary: 'Get all users'})
-  @ApiResponse({status: 200, type: [UserEntity]})
-  findAll() {
-    return this.userService.findAll();
+  @ApiResponse({status: 200, type: [User]})
+  getUsers() {
+    return this.userService.getUsers();
   }
 
   @Get(':id')
   @ApiOperation({summary: 'Get user by id'})
-  @ApiResponse({status: 200, type: UserEntity})
-  async findOne(@Param('id') id: string) {
+  @ApiResponse({status: 200, type: User})
+  async getUser(@Param('id') id: string) {
     try {
-      return await this.userService.findOne(id);
+      return await this.userService.getUser(id);
     } catch (e) {
       throw new HttpException({
         error: e.message
@@ -47,10 +47,10 @@ export class UserController {
 
   @Patch(':id')
   @ApiOperation({summary: 'Update user'})
-  @ApiResponse({status: 200, type: UserEntity})
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @ApiResponse({status: 200, type: User})
+  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return await this.userService.update(id, updateUserDto);
+      return await this.userService.updateUser(id, updateUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
@@ -59,16 +59,16 @@ export class UserController {
     }
   }
 
-  @Delete(':id')
-  @ApiOperation({summary: 'Delete user'})
-  @ApiResponse({status: 200, type: UserEntity})
-  async remove(@Param('id') id: string) {
-    try {
-      return await this.userService.remove(id);
-    } catch (e) {
-      throw new HttpException({
-        error: e.message
-      }, HttpStatus.NOT_FOUND);
-    }
-  }
+  // @Delete(':id')
+  // @ApiOperation({summary: 'Delete user'})
+  // @ApiResponse({status: 200, type: User})
+  // async remove(@Param('id') id: string) {
+  //   try {
+  //     return await this.userService.remove(id);
+  //   } catch (e) {
+  //     throw new HttpException({
+  //       error: e.message
+  //     }, HttpStatus.NOT_FOUND);
+  //   }
+  // }
 }

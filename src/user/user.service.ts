@@ -1,48 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {Model} from "mongoose";
+import mongoose, {Model, Types} from "mongoose";
 import {UserDocument} from "./schema/user.schema";
 import {InjectModel} from "@nestjs/mongoose";
-import {UserEntity} from "./entities/user.entity";
+import {User} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
+import {UserRepository} from "./user.repository";
+import {validate} from "class-validator";
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
+  constructor(private readonly usersRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<null|User> {
     createUserDto.createdAt = new Date()
     createUserDto.password = await this.hashPassword(createUserDto.password)
 
-    return this.userModel.create(createUserDto);
+    return this.usersRepository.create(createUserDto);
   }
 
-  findAll() {
-    return this.userModel.find();
+  getUsers() {
+    return this.usersRepository.find();
   }
 
-  async findOne(filter: string|object) {
-    if(typeof filter  == 'string'){
+  async getUser(filter: string|object): Promise<null|User> {
+
+    if(filter instanceof mongoose.Types.ObjectId){
       filter = {'_id': filter}
     }
-    let result
-    try {
-      result = await this.userModel.findOne(filter);
-    } catch (e){
-      throw ({message: 'invalid id'})
+    else if(typeof filter  == 'string'){
+      filter = {'_id': filter}
     }
+
+    let result: User
+    result = await this.usersRepository.findOne(filter);
+
     if (!result){
-      throw ({message: 'not found user'})
+      throw new Error('not found user');
     }
+
     return result
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
     updateUserDto.password = await this.hashPassword(updateUserDto.password)
 
     let result
-    result = await this.userModel.findOneAndUpdate({'_id': id}, updateUserDto, {returnOriginal: false});
+    result = await this.usersRepository.findOneAndUpdate({'_id': id}, updateUserDto);
     if (!result) {
       throw ({message: 'not found user'})
     }
@@ -52,12 +57,9 @@ export class UserService {
   async remove(id: string) {
     let result
     try {
-      result = await this.userModel.findOneAndRemove({'_id': id});
+      result = await this.usersRepository.deleteMany({'_id': id});
     } catch (e) {
       throw ({message: 'invalid id'})
-    }
-    if (!result) {
-      throw ({message: 'not found user'})
     }
     return result
   }

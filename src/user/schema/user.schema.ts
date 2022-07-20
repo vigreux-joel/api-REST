@@ -1,11 +1,11 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import {UserEntity} from "../entities/user.entity";
+import {User} from "../entities/user.entity";
 
-export type UserDocument = UserEntity & Document;
+export type UserDocument = User & Document;
 
-export const UserSchema = SchemaFactory.createForClass(UserEntity);
+export const UserSchema = SchemaFactory.createForClass(User);
 
 const SALT_WORK_FACTOR = 10;
 
