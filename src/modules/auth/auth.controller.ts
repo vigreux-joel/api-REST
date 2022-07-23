@@ -6,25 +6,20 @@ import {User} from "../user/entities/user.entity";
 import {CreateUserDto} from "../user/dto/create-user.dto";
 import {LocalAuthGuard} from "./guards/local-auth.guard";
 import {LoginAuthDto} from "./dto/login-auth.dto";
+import {helper} from "./auth.const";
 
+@ApiTags(helper.name.ucfirst())
 @Controller()
 export class AuthController {
-    constructor(private authService: AuthService) {}
+    constructor(private service: AuthService) {}
 
 
     @UseGuards(LocalAuthGuard)
     @ApiOperation({summary: 'Sign in to an account'})
     @Post('login')
-    @ApiTags('Auth')
     @ApiResponse({ status: 201, description: 'Returns a access token.'})
     @ApiResponse({ status: 401, description: 'Unauthorized'})
     async login(@Request() req, @Body() body: LoginAuthDto) {
-        return this.authService.login(req.user);
+        return this.service.login(req.user);
     }
-
-    // @UseGuards(JwtAuthGuard)
-    // @Get('profile')
-    // getProfile(@Request() req) {
-    //     return req.user;
-    // }
 }

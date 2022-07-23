@@ -29,7 +29,7 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @MinLength(8)
-    @ApiProperty({ example: 'Azertyuiop'})
+    @ApiProperty({ example: 'passwordExample'})
     password: string;
 
     createdAt: Date;

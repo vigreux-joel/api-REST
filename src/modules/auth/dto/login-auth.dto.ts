@@ -8,7 +8,7 @@ export class LoginAuthDto {
     identifier: string;
 
     @IsNotEmpty()
-    @ApiProperty({ example: 'password'})
+    @ApiProperty({ example: 'passwordExample'})
     password: string;
 
     user: User;

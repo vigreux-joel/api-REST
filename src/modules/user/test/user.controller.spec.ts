@@ -1,4 +1,5 @@
-import {getModelToken, MongooseModule} from "@nestjs/mongoose"
+import {appOption} from "../../../start";
+import {MongooseModule} from "@nestjs/mongoose"
 import {Test, TestingModule} from "@nestjs/testing"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
@@ -10,7 +11,6 @@ import {UserRepository} from "../user.repository";
 import {INestApplication, ValidationPipe} from "@nestjs/common";
 import {UserController} from "../user.controller";
 import * as request from 'supertest';
-import {appOption} from "../../start";
 import {helper} from "../user.const";
 
 describe('UserController', () => {
@@ -28,7 +28,8 @@ describe('UserController', () => {
       imports: [
         ConfigModule.forRoot(),
         MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: User.name, schema: UserSchema}])],
+        MongooseModule.forFeature([{name: User.name, schema: UserSchema}])
+      ],
     }).compile()
 
     userService = moduleRef.get<UserService>(UserService);

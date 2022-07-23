@@ -1,11 +1,12 @@
-import { AuthModule } from './auth/auth.module';
+
 import {ConfigModule} from "@nestjs/config";
 import {MongooseModule} from "@nestjs/mongoose";
-import {BlogModule} from "./blog/blog.module";
-import {MongooseSchemasModule} from "./mongoose-schemas/mongoose-schemas-module";
-import {UserModule} from "./user/user.module";
 import {AppService} from "./app.service";
 import {Module} from "@nestjs/common";
+import {MongooseSchemasModule} from "./modules/mongoose-schemas/mongoose-schemas-module";
+import {UserModule} from "./modules/user/user.module";
+import {AuthModule} from "./modules/auth/auth.module";
+import {BlogModule} from "./modules/blog/blog.module";
 
 @Module({
     imports: [

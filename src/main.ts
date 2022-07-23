@@ -1,7 +1,6 @@
-import 'dotenv/config';
+import {appOption} from "./start";
 import {NestFactory} from '@nestjs/core';
 import {Logger} from "@nestjs/common";
-import {appOption} from "./start";
 import {AppModule} from "./app.module";
 
 

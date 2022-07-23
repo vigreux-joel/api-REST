@@ -6,7 +6,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {User} from "./entities/user.entity";
 import {helper} from "./user.const";
 
-@ApiTags(helper.name+'s')
+@ApiTags((helper.name+'s').ucfirst())
 @Controller(helper.name)
 export class UserController {
   constructor(private readonly service: UserService) {}

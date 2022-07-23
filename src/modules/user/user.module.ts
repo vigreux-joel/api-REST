@@ -7,7 +7,7 @@ import {UserRepository} from "./user.repository";
 import {helper} from "./user.const";
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: helper.name.charAt(0).toUpperCase() + helper.name.slice(1), schema: UserSchema }])],
+  imports: [MongooseModule.forFeature([{ name: helper.name.ucfirst(), schema: UserSchema }])],
   controllers: [UserController],
   providers: [UserService, UserRepository],
   exports: [UserService]
