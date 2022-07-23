@@ -14,12 +14,13 @@ export class UserController {
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create user'})
   @ApiResponse({status: 201, type: User})
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     try {
-      return await this.userService.createUser(createUserDto);
+      return await this.userService.create(createUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
+        code: e.code,
         keyValue: e.keyValue
       }, HttpStatus.FORBIDDEN);
     }
@@ -28,16 +29,16 @@ export class UserController {
   @Get()
   @ApiOperation({summary: 'Get all users'})
   @ApiResponse({status: 200, type: [User]})
-  getUsers() {
-    return this.userService.getUsers();
+  findAll() {
+    return this.userService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({summary: 'Get user by id'})
   @ApiResponse({status: 200, type: User})
-  async getUser(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return await this.userService.getUser(id);
+      return await this.userService.findOne(id);
     } catch (e) {
       throw new HttpException({
         error: e.message
@@ -48,9 +49,9 @@ export class UserController {
   @Patch(':id')
   @ApiOperation({summary: 'Update user'})
   @ApiResponse({status: 200, type: User})
-  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return await this.userService.updateUser(id, updateUserDto);
+      return await this.userService.update(id, updateUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
@@ -59,16 +60,16 @@ export class UserController {
     }
   }
 
-  // @Delete(':id')
-  // @ApiOperation({summary: 'Delete user'})
-  // @ApiResponse({status: 200, type: User})
-  // async remove(@Param('id') id: string) {
-  //   try {
-  //     return await this.userService.remove(id);
-  //   } catch (e) {
-  //     throw new HttpException({
-  //       error: e.message
-  //     }, HttpStatus.NOT_FOUND);
-  //   }
-  // }
+  @Delete(':id')
+  @ApiOperation({summary: 'Delete user'})
+  @ApiResponse({status: 200, type: User})
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.userService.remove(id);
+    } catch (e) {
+      throw new HttpException({
+        error: e.message
+      }, HttpStatus.NOT_FOUND);
+    }
+  }
 }

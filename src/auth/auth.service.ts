@@ -11,7 +11,7 @@ export class AuthService {
     async validateUser(identifier: string, password: string): Promise<boolean|User> {
         let user:User
         try{
-            user = await this.userService.getUser({email: identifier})
+            user = await this.userService.findOne({email: identifier})
         } catch (e){
             return false
         }

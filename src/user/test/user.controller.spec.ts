@@ -1,23 +1,21 @@
 import {getModelToken, MongooseModule} from "@nestjs/mongoose"
 import {Test, TestingModule} from "@nestjs/testing"
-import {FilterQuery, Model, Types} from "mongoose"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
-// import { UserModel } from "./support/user.model"
 import {User} from "../entities/user.entity";
-import {use} from "passport";
-import {UserDocument, UserSchema} from "../schema/user.schema";
+import {UserSchema} from "../schema/user.schema";
 import {ConfigModule} from "@nestjs/config";
 import {CreateUserDto} from "../dto/create-user.dto";
 import {UserRepository} from "../user.repository";
-import {throws} from "assert";
 import {INestApplication, ValidationPipe} from "@nestjs/common";
 import {UserController} from "../user.controller";
+import * as request from 'supertest';
+import {appOption} from "../../start";
 
 describe('UserController', () => {
-  let userController: UserController;
+  let userService: UserService;
   let user//: User
-  let payload: CreateUserDto = new CreateUserDto()
+  let payload: CreateUserDto =  userStub();
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -32,98 +30,128 @@ describe('UserController', () => {
         MongooseModule.forFeature([{name: User.name, schema: UserSchema}])],
     }).compile()
 
-    userController = moduleRef.get<UserController>(UserController);
+    userService = moduleRef.get<UserService>(UserService);
+
+    app = moduleRef.createNestApplication();
+    await appOption(app)
+    await app.init();
   })
 
-
   describe('create', () => {
+    let response
 
     beforeAll(async () => {
-      payload = userStub()
-      // payload.email = userStub().email
-      // payload.password = userStub().password
-
       while(user === undefined){
-        try{
-          user = await userController.createUser(payload);
-        } catch (e) {
-          if(e.code == 11000) {
-            payload.email="e"+payload.email
-            continue
-          }
-          throw(e.message)
+        response = await request(app.getHttpServer())
+            .post('/user')
+            .send(payload)
+        if(response.status == 403 && response.body.code == 11000){
+          payload.email="e"+payload.email
+          continue
         }
+
+        user = response.body
       }
     })
 
     it('should return a user', () => {
-
-      expect(user.toObject()).toEqual({
+      expect(response.status).toBe(201)
+      expect(user).toEqual({
         __v: 0,
         _id: user._id,
-        ...payload
+        ...payload,
+        password: user.password,
+        createdAt: user.createdAt,
+        avatar: undefined
       });
     })
-    //
-    // it('should throw an error when an email is already used', async () => {
-    //   try{
-    //     await userService.createUser(payload)
-    //   } catch (e) {
-    //     expect(e.code).toBe(11000);
-    //   }
-    // })
 
+    it('should hash the password', () => {
+      expect(user.payload).not.toEqual(payload.password);
+    })
+
+    it('should throw an error when an email is already used', async () => {
+      const response = await request(app.getHttpServer())
+          .post('/user')
+          .send(payload)
+      expect(response.status).toBe(403)
+    })
   })
 
-  //
-  //
-  // describe('find', () => {
-  //
-  //   describe('findOne', () => {
-  //     it('should return a user', async () => {
-  //       const userTemp:any = await userService.getUser(user._id)
-  //       expect({
-  //         "__v": 0,
-  //         ...userTemp.toObject()
-  //
-  //       }).toEqual(user.toObject());
-  //     })
-  //
-  //     it('should throw an error when not found user',  async () => {
-  //       await expect(userService.getUser("it's a test")).rejects.toThrow();
-  //     })
-  //   })
-  //
-  //   describe('findAll', () => {
-  //     it('should return a user list', async () => {
-  //       const users = await userService.getUsers()
-  //
-  //       let tempUser = []
-  //       users.forEach((user) => {
-  //         tempUser.push(user.toObject())
-  //       })
-  //       expect(tempUser).toEqual(
-  //           expect.arrayContaining([user.toObject()]),
-  //       );
-  //     })
-  //   })
-  //
-  //
-  //   // describe('findOneAndUpdate', () => {
-  //   //
-  //   //   test('should return a user', async () => {
-  //   //     expect(await userService.updateUser(user._id, payload)).toEqual(user)
-  //   //   })
-  //   // })
-  // })
-  //
-  //
-  // describe('delete', () => {
-  //   it('should return true', async () => {
-  //     expect(await userService.remove(user._id)).toBeTruthy()
-  //   })
-  //   it('should return false if we repeat the action', async () => {
-  //     expect(await userService.remove(user._id)).toBeFalsy()
-  //   })
-  // })
+
+  describe('find', () => {
+
+    describe('findOne', () => {
+      it('should return a user', async () => {
+        const response = await request(app.getHttpServer())
+            .get('/user/'+user._id)
+
+        expect(response.status).toBe(200)
+        expect({
+            "__v": 0,
+            ...response.body
+          }).toEqual(user)
+      })
+
+      it('should throw an error when not found user',  async () => {
+        const response = await request(app.getHttpServer())
+            .get('/user/its_a_test')
+
+        expect(response.status).toBe(404)
+        expect(response.body.error).not.toBeUndefined()
+      })
+    })
+
+    describe('All', () => {
+      it('should return a user list', async () => {
+        const response = await request(app.getHttpServer())
+            .get('/user')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+            expect.arrayContaining([user]),
+        );
+      })
+    })
+  })
+
+  describe('update', () => {
+    let response
+    beforeAll(async () => {
+      payload = {
+        ...payload,
+        firstname: 'toto',
+        password: undefined
+      }
+      user = {
+        ...user,
+        firstname: 'toto'
+      }
+
+      response = await request(app.getHttpServer())
+        .patch('/user/'+user._id)
+        .send(payload)
+
+    })
+
+    test('return the modified user', async () => {
+      expect(response.body).toEqual(user)
+    })
+  })
+
+  describe('delete', () => {
+    let response
+    beforeAll(async () => {
+      response = await request(app.getHttpServer())
+          .delete('/user/'+user._id)
+    })
+    test('return the deleted user', async () => {
+      expect(response.body).toEqual(user)
+    })
+  })
+
+  afterAll(async () => {
+    await app.close();
+  });
+
 })

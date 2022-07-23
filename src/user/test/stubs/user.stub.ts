@@ -7,7 +7,7 @@ export const userStub = (): User => {
      firstname: "john",
      lastname: "snow",
      password: "Azertyuiop",
-     tel: "1",
+     tel: "+33110000000",
      email: 'test@example.com'
  }
 }
