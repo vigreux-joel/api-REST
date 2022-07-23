@@ -4,15 +4,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {User} from "./entities/user.entity";
+import {helper} from "./user.const";
 
-@ApiTags('Users')
-@Controller('user')
+@ApiTags(helper.name+'s')
+@Controller(helper.name)
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Post()
   @ApiTags('Auth')
-  @ApiOperation({summary: 'Create user'})
+  @ApiOperation({summary: 'Create '+helper.name})
   @ApiResponse({status: 201, type: User})
   async create(@Body() createUserDto: CreateUserDto) {
     try {
@@ -27,14 +28,14 @@ export class UserController {
   }
 
   @Get()
-  @ApiOperation({summary: 'Get all users'})
+  @ApiOperation({summary: 'Get all '+helper.name+'s'})
   @ApiResponse({status: 200, type: [User]})
   findAll() {
     return this.service.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({summary: 'Get user by id'})
+  @ApiOperation({summary: 'Get '+helper.name+' by id'})
   @ApiResponse({status: 200, type: User})
   async findOne(@Param('id') id: string) {
     try {
@@ -47,7 +48,7 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOperation({summary: 'Update user'})
+  @ApiOperation({summary: 'Update '+helper.name})
   @ApiResponse({status: 200, type: User})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -61,7 +62,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({summary: 'Delete user'})
+  @ApiOperation({summary: 'Delete '+helper.name})
   @ApiResponse({status: 200, type: User})
   async remove(@Param('id') id: string) {
     try {
