@@ -1,13 +1,13 @@
-import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
+import mongoose, { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
+import {searchOne} from "./search";
 
 export abstract class EntityRepository<T extends Document> {
-  constructor(protected readonly entityModel: Model<T>) {}
+  protected constructor(protected readonly entityModel: Model<T>) {}
 
   async findOne(
-    entityFilterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>
+    filterQuery: string|object,
   ): Promise<T | null> {
-    return this.entityModel.findOne(entityFilterQuery).exec()
+    return this.entityModel.findOne(searchOne(filterQuery)).exec()
   }
 
   async find(
@@ -22,11 +22,11 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async findOneAndUpdate(
-    entityFilterQuery: FilterQuery<T>,
+    filterQuery: string|object,
     updateEntityData: UpdateQuery<unknown>
   ): Promise<T | null> {
     return this.entityModel.findOneAndUpdate(
-      entityFilterQuery,
+      searchOne(filterQuery),
       updateEntityData,
       {
         returnOriginal: false,
@@ -35,8 +35,8 @@ export abstract class EntityRepository<T extends Document> {
     )
   }
 
-  async findOneAndRemove(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
-    return this.entityModel.findOneAndRemove(entityFilterQuery);
+  async findOneAndRemove(filterQuery: string|object): Promise<boolean> {
+    return this.entityModel.findOneAndRemove(searchOne(filterQuery));
   }
 
   async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {

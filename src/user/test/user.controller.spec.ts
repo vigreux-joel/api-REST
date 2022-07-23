@@ -11,10 +11,11 @@ import {INestApplication, ValidationPipe} from "@nestjs/common";
 import {UserController} from "../user.controller";
 import * as request from 'supertest';
 import {appOption} from "../../start";
+import {helper} from "../user.const";
 
 describe('UserController', () => {
   let userService: UserService;
-  let user//: User
+  let user
   let payload: CreateUserDto =  userStub();
   let app: INestApplication;
 
@@ -43,7 +44,7 @@ describe('UserController', () => {
     beforeAll(async () => {
       while(user === undefined){
         response = await request(app.getHttpServer())
-            .post('/user')
+            .post('/'+helper.name)
             .send(payload)
         if(response.status == 403 && response.body.code == 11000){
           payload.email="e"+payload.email
@@ -72,7 +73,7 @@ describe('UserController', () => {
 
     it('should throw an error when an email is already used', async () => {
       const response = await request(app.getHttpServer())
-          .post('/user')
+          .post('/'+helper.name)
           .send(payload)
       expect(response.status).toBe(403)
     })
@@ -84,7 +85,7 @@ describe('UserController', () => {
     describe('findOne', () => {
       it('should return a user', async () => {
         const response = await request(app.getHttpServer())
-            .get('/user/'+user._id)
+            .get('/'+helper.name+'/'+user._id)
 
         expect(response.status).toBe(200)
         expect({
@@ -95,7 +96,7 @@ describe('UserController', () => {
 
       it('should throw an error when not found user',  async () => {
         const response = await request(app.getHttpServer())
-            .get('/user/its_a_test')
+            .get('/'+helper.name+'/its_a_test')
 
         expect(response.status).toBe(404)
         expect(response.body.error).not.toBeUndefined()
@@ -105,7 +106,7 @@ describe('UserController', () => {
     describe('All', () => {
       it('should return a user list', async () => {
         const response = await request(app.getHttpServer())
-            .get('/user')
+            .get('/'+helper.name)
 
         expect(response.status).toBe(200)
         expect(response.body).toEqual(
@@ -129,7 +130,7 @@ describe('UserController', () => {
       }
 
       response = await request(app.getHttpServer())
-        .patch('/user/'+user._id)
+        .patch('/'+helper.name+'/'+user._id)
         .send(payload)
 
     })
@@ -143,7 +144,7 @@ describe('UserController', () => {
     let response
     beforeAll(async () => {
       response = await request(app.getHttpServer())
-          .delete('/user/'+user._id)
+          .delete('/'+helper.name+'/'+user._id)
     })
     test('return the deleted user', async () => {
       expect(response.body).toEqual(user)

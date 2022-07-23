@@ -5,8 +5,7 @@ import {BlogSchema} from "../blog/blog.schema";
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
-            // { name: 'User', schema: UserSchema },
+        MongooseModule.forFeature([,
             { name: 'Blog', schema: BlogSchema }
         ]),
     ],
