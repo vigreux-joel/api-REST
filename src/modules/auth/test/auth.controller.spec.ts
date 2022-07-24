@@ -14,7 +14,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {UserSchema} from "../../user/schema/user.schema";
 import {CreateUserDto} from "../../user/dto/create-user.dto";
 import {userStub} from "../../user/test/stubs/user.stub";
-import {userHelper} from "../../user/user.const";
+import {UserHelper} from "../../user/user.helper";
 
 describe('UserController', () => {
   let authService: AuthService
@@ -32,7 +32,7 @@ describe('UserController', () => {
         }),
         ConfigModule.forRoot(),
         MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: userHelper.entityName.ucfirst(), schema: UserSchema}]),
+        MongooseModule.forFeature([{name: UserHelper.modelName, schema: UserSchema}]),
       ],
       providers: [AuthService, LocalStrategy, JwtStrategy],
       controllers: [AuthController],

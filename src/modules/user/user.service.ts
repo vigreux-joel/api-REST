@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import {UserRepository} from "./user.repository";
-import {userHelper} from "./user.const";
+import {UserHelper} from "./user.helper";
 
 @Injectable()
 export class UserService {
@@ -25,7 +25,7 @@ export class UserService {
     let result: UserEntity
     result = await this.userRepository.findOne(filter);
     if (!result){
-      throw new Error('not found '+userHelper.entityName);
+      throw new Error('not found '+UserHelper.entityName);
     }
     return result
   }
@@ -37,7 +37,7 @@ export class UserService {
     let result
     result = await this.userRepository.findOneAndUpdate(filter, updateUserDto);
     if (!result) {
-      throw new Error('not found '+userHelper.entityName)
+      throw new Error('not found '+UserHelper.entityName)
     }
     return result
   }
@@ -47,7 +47,7 @@ export class UserService {
     try {
       result = await this.userRepository.findOneAndRemove(filter);
     } catch (e) {
-      throw new Error('not found '+userHelper.entityName)
+      throw new Error('not found '+UserHelper.entityName)
     }
     return result
   }

@@ -4,16 +4,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserEntity} from "./entities/user.entity";
-import {userHelper} from "./user.const";
+import {UserHelper} from "./user.helper";
 
-@ApiTags((userHelper.entityName+'s').ucfirst())
-@Controller(userHelper.entityName)
+@ApiTags((UserHelper.entityName+'s').ucfirst())
+@Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Post()
   @ApiTags('Auth')
-  @ApiOperation({summary: 'Create '+userHelper.entityName})
+  @ApiOperation({summary: 'Create '+UserHelper.entityName})
   @ApiResponse({status: 201, type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
     try {
@@ -28,14 +28,14 @@ export class UserController {
   }
 
   @Get()
-  @ApiOperation({summary: 'Get all '+userHelper.entityName+'s'})
+  @ApiOperation({summary: 'Get all '+UserHelper.entityName+'s'})
   @ApiResponse({status: 200, type: [UserEntity]})
   findAll() {
     return this.service.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({summary: 'Get '+userHelper.entityName+' by id'})
+  @ApiOperation({summary: 'Get '+UserHelper.entityName+' by id'})
   @ApiResponse({status: 200, type: UserEntity})
   async findOne(@Param('id') id: string) {
     try {
@@ -48,7 +48,7 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOperation({summary: 'Update '+userHelper.entityName})
+  @ApiOperation({summary: 'Update '+UserHelper.entityName})
   @ApiResponse({status: 200, type: UserEntity})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -62,7 +62,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({summary: 'Delete '+userHelper.entityName})
+  @ApiOperation({summary: 'Delete '+UserHelper.entityName})
   @ApiResponse({status: 200, type: UserEntity})
   async remove(@Param('id') id: string) {
     try {

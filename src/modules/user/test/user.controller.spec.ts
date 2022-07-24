@@ -3,7 +3,6 @@ import {MongooseModule} from "@nestjs/mongoose"
 import {Test, TestingModule} from "@nestjs/testing"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
-import {UserEntity} from "../entities/user.entity";
 import {UserSchema} from "../schema/user.schema";
 import {ConfigModule} from "@nestjs/config";
 import {CreateUserDto} from "../dto/create-user.dto";
@@ -11,7 +10,7 @@ import {UserRepository} from "../user.repository";
 import {INestApplication} from "@nestjs/common";
 import {UserController} from "../user.controller";
 import * as request from 'supertest';
-import {userHelper} from "../user.const";
+import {UserHelper} from "../user.helper";
 
 describe('UserController', () => {
   let userService: UserService;
@@ -28,7 +27,7 @@ describe('UserController', () => {
       imports: [
         ConfigModule.forRoot(),
         MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: userHelper.entityName.ucfirst(), schema: UserSchema}])
+        MongooseModule.forFeature([{name: UserHelper.modelName, schema: UserSchema}])
       ],
     }).compile()
 
@@ -45,7 +44,7 @@ describe('UserController', () => {
     beforeAll(async () => {
       while(user === undefined){
         response = await request(app.getHttpServer())
-            .post('/'+userHelper.entityName)
+            .post('/'+UserHelper.entityName)
             .send(payload)
         if(response.status == 403 && response.body.code == 11000){
           payload.email="e"+payload.email
@@ -74,7 +73,7 @@ describe('UserController', () => {
 
     it('should throw an error when an email is already used', async () => {
       const response = await request(app.getHttpServer())
-          .post('/'+userHelper.entityName)
+          .post('/'+UserHelper.entityName)
           .send(payload)
       expect(response.status).toBe(403)
     })
@@ -86,7 +85,7 @@ describe('UserController', () => {
     describe('findOne', () => {
       it('should return a user', async () => {
         const response = await request(app.getHttpServer())
-            .get('/'+userHelper.entityName+'/'+user._id)
+            .get('/'+UserHelper.entityName+'/'+user._id)
 
         expect(response.status).toBe(200)
         expect({
@@ -97,7 +96,7 @@ describe('UserController', () => {
 
       it('should throw an error when not found user',  async () => {
         const response = await request(app.getHttpServer())
-            .get('/'+userHelper.entityName+'/its_a_test')
+            .get('/'+UserHelper.entityName+'/its_a_test')
 
         expect(response.status).toBe(404)
         expect(response.body.error).not.toBeUndefined()
@@ -107,7 +106,7 @@ describe('UserController', () => {
     describe('All', () => {
       it('should return a user list', async () => {
         const response = await request(app.getHttpServer())
-            .get('/'+userHelper.entityName)
+            .get('/'+UserHelper.entityName)
 
         expect(response.status).toBe(200)
         expect(response.body).toEqual(
@@ -131,7 +130,7 @@ describe('UserController', () => {
       }
 
       response = await request(app.getHttpServer())
-        .patch('/'+userHelper.entityName+'/'+user._id)
+        .patch('/'+UserHelper.entityName+'/'+user._id)
         .send(payload)
 
     })
@@ -145,7 +144,7 @@ describe('UserController', () => {
     let response
     beforeAll(async () => {
       response = await request(app.getHttpServer())
-          .delete('/'+userHelper.entityName+'/'+user._id)
+          .delete('/'+UserHelper.entityName+'/'+user._id)
     })
     test('return the deleted user', async () => {
       expect(response.body).toEqual(user)
