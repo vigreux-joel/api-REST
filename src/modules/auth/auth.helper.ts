@@ -1,3 +1,3 @@
 export class AuthHelper {
-    static moduleName = 'user'
+    static moduleName = 'auth'
 }

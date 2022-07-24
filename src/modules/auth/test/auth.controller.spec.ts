@@ -15,6 +15,8 @@ import {UserSchema} from "../../user/schema/user.schema";
 import {CreateUserDto} from "../../user/dto/create-user.dto";
 import {userStub} from "../../user/test/stubs/user.stub";
 import {UserHelper} from "../../user/user.helper";
+import {DatabaseModule} from "../../database/database.module";
+import {DatabaseHelper} from "../../database/database.helper";
 
 describe('UserController', () => {
   let authService: AuthService
@@ -30,9 +32,8 @@ describe('UserController', () => {
           secret: process.env.APP_SECRET,
           signOptions: { expiresIn: '1h' },
         }),
-        ConfigModule.forRoot(),
-        MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: UserHelper.modelName, schema: UserSchema}]),
+        DatabaseModule,
+        DatabaseHelper.modelRegister(UserHelper.modelName, UserSchema),
       ],
       providers: [AuthService, LocalStrategy, JwtStrategy],
       controllers: [AuthController],

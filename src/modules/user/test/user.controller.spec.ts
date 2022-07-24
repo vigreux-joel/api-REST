@@ -11,6 +11,8 @@ import {INestApplication} from "@nestjs/common";
 import {UserController} from "../user.controller";
 import * as request from 'supertest';
 import {UserHelper} from "../user.helper";
+import {DatabaseModule} from "../../database/database.module";
+import {DatabaseHelper} from "../../database/database.helper";
 
 describe('UserController', () => {
   let userService: UserService;
@@ -25,9 +27,8 @@ describe('UserController', () => {
         UserService, UserRepository,
       ],
       imports: [
-        ConfigModule.forRoot(),
-        MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: UserHelper.modelName, schema: UserSchema}])
+        DatabaseModule,
+        DatabaseHelper.modelRegister(UserHelper.modelName, UserSchema)
       ],
     }).compile()
 

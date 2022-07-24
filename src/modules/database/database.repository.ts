@@ -1,13 +1,13 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
-import {searchOne} from "./search";
+import {DatabaseHelper as DB} from "./database.helper";
 
-export abstract class EntityRepository<T extends Document> {
+export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
   async findOne(
     filterQuery: string|object,
   ): Promise<T | null> {
-    return this.entityModel.findOne(searchOne(filterQuery)).exec()
+    return this.entityModel.findOne(DB.searchOne(filterQuery)).exec()
   }
 
   async find(
@@ -26,7 +26,7 @@ export abstract class EntityRepository<T extends Document> {
     updateEntityData: UpdateQuery<unknown>
   ): Promise<T | null> {
     return this.entityModel.findOneAndUpdate(
-      searchOne(filterQuery),
+      DB.searchOne(filterQuery),
       updateEntityData,
       {
         returnOriginal: false,
@@ -36,7 +36,7 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async findOneAndRemove(filterQuery: string|object): Promise<boolean> {
-    return this.entityModel.findOneAndRemove(searchOne(filterQuery));
+    return this.entityModel.findOneAndRemove(DB.searchOne(filterQuery));
   }
 
   async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
