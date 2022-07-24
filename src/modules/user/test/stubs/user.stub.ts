@@ -1,6 +1,6 @@
-import {User} from "../../entities/user.entity";
+import {UserEntity} from "../../entities/user.entity";
 
-export const userStub = (): User => {
+export const userStub = (): UserEntity => {
  return {
      avatar: "",
      createdAt: null,

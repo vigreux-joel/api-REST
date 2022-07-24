@@ -1,54 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import mongoose, {Model, Types} from "mongoose";
-import {User} from "./entities/user.entity";
+import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import {UserRepository} from "./user.repository";
-import {helper} from "./user.const";
+import {userHelper} from "./user.const";
 
 @Injectable()
 export class UserService {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<null|User> {
+  async create(createUserDto: CreateUserDto): Promise<null|UserEntity> {
     createUserDto.createdAt = new Date()
     createUserDto.password = await this.hashPassword(createUserDto.password)
 
-    return this.repository.create(createUserDto);
+    return this.userRepository.create(createUserDto);
   }
 
   findAll() {
-    return this.repository.find();
+    return this.userRepository.find();
   }
 
-  async findOne(filter: string|object): Promise<null|User> {
-    let result: User
-    result = await this.repository.findOne(filter);
+  async findOne(filter: string|object): Promise<null|UserEntity> {
+    let result: UserEntity
+    result = await this.userRepository.findOne(filter);
     if (!result){
-      throw new Error('not found '+helper.name);
+      throw new Error('not found '+userHelper.entityName);
     }
     return result
   }
 
-  async update(filter: string|object, updateUserDto: UpdateUserDto): Promise<null|User> {
+  async update(filter: string|object, updateUserDto: UpdateUserDto): Promise<null|UserEntity> {
     if(updateUserDto.password)
       updateUserDto.password = await this.hashPassword(updateUserDto.password)
 
     let result
-    result = await this.repository.findOneAndUpdate(filter, updateUserDto);
+    result = await this.userRepository.findOneAndUpdate(filter, updateUserDto);
     if (!result) {
-      throw new Error('not found '+helper.name)
+      throw new Error('not found '+userHelper.entityName)
     }
     return result
   }
 
-  async remove(filter: string|object): Promise<null|User> {
+  async remove(filter: string|object): Promise<null|UserEntity> {
     let result
     try {
-      result = await this.repository.findOneAndRemove(filter);
+      result = await this.userRepository.findOneAndRemove(filter);
     } catch (e) {
-      throw new Error('not found '+helper.name)
+      throw new Error('not found '+userHelper.entityName)
     }
     return result
   }

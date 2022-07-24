@@ -2,7 +2,7 @@ import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 
 @Schema()
-export class User {
+export class UserEntity {
 
     @Prop({
         required: true,

@@ -3,18 +3,18 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {User} from "./entities/user.entity";
-import {helper} from "./user.const";
+import {UserEntity} from "./entities/user.entity";
+import {userHelper} from "./user.const";
 
-@ApiTags((helper.name+'s').ucfirst())
-@Controller(helper.name)
+@ApiTags((userHelper.entityName+'s').ucfirst())
+@Controller(userHelper.entityName)
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Post()
   @ApiTags('Auth')
-  @ApiOperation({summary: 'Create '+helper.name})
-  @ApiResponse({status: 201, type: User})
+  @ApiOperation({summary: 'Create '+userHelper.entityName})
+  @ApiResponse({status: 201, type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       return await this.service.create(createUserDto);
@@ -28,15 +28,15 @@ export class UserController {
   }
 
   @Get()
-  @ApiOperation({summary: 'Get all '+helper.name+'s'})
-  @ApiResponse({status: 200, type: [User]})
+  @ApiOperation({summary: 'Get all '+userHelper.entityName+'s'})
+  @ApiResponse({status: 200, type: [UserEntity]})
   findAll() {
     return this.service.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({summary: 'Get '+helper.name+' by id'})
-  @ApiResponse({status: 200, type: User})
+  @ApiOperation({summary: 'Get '+userHelper.entityName+' by id'})
+  @ApiResponse({status: 200, type: UserEntity})
   async findOne(@Param('id') id: string) {
     try {
       return await this.service.findOne(id);
@@ -48,8 +48,8 @@ export class UserController {
   }
 
   @Patch(':id')
-  @ApiOperation({summary: 'Update '+helper.name})
-  @ApiResponse({status: 200, type: User})
+  @ApiOperation({summary: 'Update '+userHelper.entityName})
+  @ApiResponse({status: 200, type: UserEntity})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
       return await this.service.update(id, updateUserDto);
@@ -62,8 +62,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({summary: 'Delete '+helper.name})
-  @ApiResponse({status: 200, type: User})
+  @ApiOperation({summary: 'Delete '+userHelper.entityName})
+  @ApiResponse({status: 200, type: UserEntity})
   async remove(@Param('id') id: string) {
     try {
       return await this.service.remove(id);

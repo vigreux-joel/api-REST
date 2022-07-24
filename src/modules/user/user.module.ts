@@ -4,10 +4,10 @@ import { UserController } from './user.controller';
 import {MongooseModule} from "@nestjs/mongoose";
 import {UserSchema} from "./schema/user.schema";
 import {UserRepository} from "./user.repository";
-import {helper} from "./user.const";
+import {userHelper} from "./user.const";
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: helper.name.ucfirst(), schema: UserSchema }])],
+  imports: [MongooseModule.forFeature([{ name: userHelper.entityName.ucfirst(), schema: UserSchema }])],
   controllers: [UserController],
   providers: [UserService, UserRepository],
   exports: [UserService]

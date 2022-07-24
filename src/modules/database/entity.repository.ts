@@ -1,4 +1,4 @@
-import mongoose, { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
+import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 import {searchOne} from "./search";
 
 export abstract class EntityRepository<T extends Document> {

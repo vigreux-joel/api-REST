@@ -1,8 +1,8 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import {User} from "../entities/user.entity";
+import {UserEntity} from "../entities/user.entity";
 
-export type UserDocument = User & Document;
+export type UserDocument = UserEntity & Document;
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(UserEntity);

@@ -1,6 +1,6 @@
-import {Injectable, UnauthorizedException} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {UserService} from "../user/user.service";
-import {User} from "../user/entities/user.entity";
+import {UserEntity} from "../user/entities/user.entity";
 import * as bcrypt from 'bcrypt';
 import {JwtService} from "@nestjs/jwt";
 
@@ -8,8 +8,8 @@ import {JwtService} from "@nestjs/jwt";
 export class AuthService {
     constructor(private userService: UserService, private jwtService: JwtService) {}
 
-    async validateUser(identifier: string, password: string): Promise<boolean|User> {
-        let user:User
+    async validateUser(identifier: string, password: string): Promise<boolean|UserEntity> {
+        let user:UserEntity
         try{
             user = await this.userService.findOne({email: identifier})
         } catch (e){

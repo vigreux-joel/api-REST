@@ -9,13 +9,12 @@ import {JwtStrategy} from "../strategies/jwt.strategy";
 import {AuthController} from "../auth.controller";
 import {Test, TestingModule} from "@nestjs/testing";
 import {INestApplication} from "@nestjs/common";
-import {helper} from "../auth.const";
 import {ConfigModule} from "@nestjs/config";
 import {MongooseModule} from "@nestjs/mongoose";
-import {User} from "../../user/entities/user.entity";
 import {UserSchema} from "../../user/schema/user.schema";
 import {CreateUserDto} from "../../user/dto/create-user.dto";
 import {userStub} from "../../user/test/stubs/user.stub";
+import {userHelper} from "../../user/user.const";
 
 describe('UserController', () => {
   let authService: AuthService
@@ -33,7 +32,7 @@ describe('UserController', () => {
         }),
         ConfigModule.forRoot(),
         MongooseModule.forRoot(process.env.MONGO_URL),
-        MongooseModule.forFeature([{name: User.name, schema: UserSchema}]),
+        MongooseModule.forFeature([{name: userHelper.entityName.ucfirst(), schema: UserSchema}]),
       ],
       providers: [AuthService, LocalStrategy, JwtStrategy],
       controllers: [AuthController],
