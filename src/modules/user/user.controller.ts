@@ -6,6 +6,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../database/dto/page-option.dto";
+import {ApiPaginatedResponse} from "../database/api/api-paginated.response";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @Controller(UserHelper.entityName)
@@ -30,7 +31,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({summary: 'Get all '+UserHelper.entityName+'s'})
-  @ApiResponse({status: 200, type: [UserEntity]})
+  @ApiPaginatedResponse(UserEntity)
   findAll(@Query() pageOptionsDto: PageOptionsDto) {
     return this.service.findAll(pageOptionsDto);
   }

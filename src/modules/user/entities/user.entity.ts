@@ -35,7 +35,8 @@ export class UserEntity extends AbstractEntity{
 
     @Prop({
         required: true,
-        minLength: 8
+        minLength: 8,
+        select: false
     })
     @ApiProperty({ example: 'passwordExample'})
     password: string;
