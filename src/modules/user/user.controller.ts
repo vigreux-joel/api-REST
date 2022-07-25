@@ -1,10 +1,11 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
+import {PageOptionsDto} from "../database/dto/page-option.dto";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @Controller(UserHelper.entityName)
@@ -30,8 +31,8 @@ export class UserController {
   @Get()
   @ApiOperation({summary: 'Get all '+UserHelper.entityName+'s'})
   @ApiResponse({status: 200, type: [UserEntity]})
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() pageOptionsDto: PageOptionsDto) {
+    return this.service.findAll(pageOptionsDto);
   }
 
   @Get(':id')

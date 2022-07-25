@@ -5,6 +5,7 @@ import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import {UserRepository} from "./user.repository";
 import {UserHelper} from "./user.helper";
+import {PageOptionsDto} from "../database/dto/page-option.dto";
 
 @Injectable()
 export class UserService {
@@ -17,8 +18,8 @@ export class UserService {
     return this.userRepository.create(createUserDto);
   }
 
-  findAll() {
-    return this.userRepository.find();
+    findAll(pageOptionsDto: PageOptionsDto) {
+    return this.userRepository.find(null, pageOptionsDto);
   }
 
   async findOne(filter: string|object): Promise<null|UserEntity> {
