@@ -14,6 +14,9 @@ import {UserHelper} from "../user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
 import {UserEntity} from "../entities/user.entity";
+import {PageDto} from "../../database/dto/page.dto";
+import {PageMetaDto} from "../../database/dto/page-meta.dto";
+import {Order, PageOptionsDto} from "../../database/dto/page-option.dto";
 
 describe('UserController', () => {
   let userService: UserService;
@@ -53,7 +56,7 @@ describe('UserController', () => {
           continue
         }
 
-        user = response.body
+        user = {...response.body, password: undefined}
       }
     })
 
@@ -105,10 +108,17 @@ describe('UserController', () => {
       it('should return a user list', async () => {
         const response = await request(app.getHttpServer())
             .get('/'+UserHelper.entityName)
+            .query({page: 1})
+            .query({take: 1})
 
         expect(response.status).toBe(200)
-        expect(response.body).toEqual(
-            expect.arrayContaining([user]),
+        expect(response.body.meta).toEqual({
+          ...response.body.meta,
+          page: 1,
+          take: 1,
+        })
+        expect(response.body.data).toEqual(
+            [user]
         );
       })
     })
