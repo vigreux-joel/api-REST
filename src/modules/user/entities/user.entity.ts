@@ -1,8 +1,9 @@
 import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
+import {AbstractEntity} from "../../database/AbstractEntity";
 
 @Schema()
-export class UserEntity {
+export class UserEntity extends AbstractEntity{
 
     @Prop({
         required: true,
@@ -38,11 +39,4 @@ export class UserEntity {
     })
     @ApiProperty({ example: 'passwordExample'})
     password: string;
-
-    @Prop({
-        type: Date,
-    })
-    @ApiProperty({ example: '2022-06-30T12:10:27.092Z'})
-    createdAt: Date;
-
 }

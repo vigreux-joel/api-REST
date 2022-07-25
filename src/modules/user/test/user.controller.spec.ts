@@ -13,10 +13,11 @@ import * as request from 'supertest';
 import {UserHelper} from "../user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
+import {UserEntity} from "../entities/user.entity";
 
 describe('UserController', () => {
   let userService: UserService;
-  let user
+  let user: UserEntity
   let payload: CreateUserDto =  userStub();
   let app: INestApplication;
 
@@ -59,9 +60,8 @@ describe('UserController', () => {
     it('should return a user', () => {
       expect(response.status).toBe(201)
       expect(user).toEqual({
-        __v: 0,
-        _id: user._id,
         ...payload,
+        id: user.id,
         password: user.password,
         createdAt: user.createdAt,
         avatar: undefined
@@ -69,7 +69,7 @@ describe('UserController', () => {
     })
 
     it('should hash the password', () => {
-      expect(user.payload).not.toEqual(payload.password);
+      expect(user.password).not.toEqual(payload.password);
     })
 
     it('should throw an error when an email is already used', async () => {
@@ -86,13 +86,10 @@ describe('UserController', () => {
     describe('findOne', () => {
       it('should return a user', async () => {
         const response = await request(app.getHttpServer())
-            .get('/'+UserHelper.entityName+'/'+user._id)
+            .get('/'+UserHelper.entityName+'/'+user.id)
 
         expect(response.status).toBe(200)
-        expect({
-            "__v": 0,
-            ...response.body
-          }).toEqual(user)
+        expect(response.body).toEqual(user)
       })
 
       it('should throw an error when not found user',  async () => {
@@ -131,7 +128,7 @@ describe('UserController', () => {
       }
 
       response = await request(app.getHttpServer())
-        .patch('/'+UserHelper.entityName+'/'+user._id)
+        .patch('/'+UserHelper.entityName+'/'+user.id)
         .send(payload)
 
     })
@@ -145,7 +142,7 @@ describe('UserController', () => {
     let response
     beforeAll(async () => {
       response = await request(app.getHttpServer())
-          .delete('/'+UserHelper.entityName+'/'+user._id)
+          .delete('/'+UserHelper.entityName+'/'+user.id)
     })
     test('return the deleted user', async () => {
       expect(response.body).toEqual(user)

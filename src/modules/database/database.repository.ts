@@ -27,11 +27,7 @@ export abstract class DatabaseRepository<T extends Document> {
   ): Promise<T | null> {
     return this.entityModel.findOneAndUpdate(
       DB.searchOne(filterQuery),
-      updateEntityData,
-      {
-        returnOriginal: false,
-        new: true 
-      }
+      updateEntityData
     )
   }
 
