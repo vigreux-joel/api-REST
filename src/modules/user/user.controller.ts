@@ -1,14 +1,27 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query} from '@nestjs/common';
-import { UserService } from './user.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+  Query,
+  UseInterceptors
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {UserEntity} from "./entities/user.entity";
+import {TransformInterceptor, UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../database/dto/page-option.dto";
 import {ApiPaginatedResponse} from "../database/api/api-paginated.response";
+import {UserService} from "./user.service";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
+@UseInterceptors(TransformInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly service: UserService) {}
@@ -30,10 +43,10 @@ export class UserController {
   }
 
   @Get()
-  @ApiOperation({summary: 'Get all '+UserHelper.entityName+'s'})
+  @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(UserEntity)
-  findAll(@Query() pageOptionsDto: PageOptionsDto) {
-    return this.service.findAll(pageOptionsDto);
+  async findAll(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.service.findAll(pageOptionsDto);
   }
 
   @Get(':id')

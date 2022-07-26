@@ -1,9 +1,12 @@
 import {Prop} from "@nestjs/mongoose";
+import { ObjectId } from "mongodb";
 import {ApiProperty} from "@nestjs/swagger";
+import {Transform} from "class-transformer";
 
 export abstract class AbstractEntity {
 
-    public id: string;
+    @Transform((value) => value.obj._id.toString())
+    public _id: string;
 
     @Prop({
         type: Date,

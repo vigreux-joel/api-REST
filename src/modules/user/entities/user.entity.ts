@@ -1,8 +1,17 @@
 import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {AbstractEntity} from "../../database/AbstractEntity";
+import {classToPlain, Exclude, instanceToPlain} from "class-transformer";
+import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
+import {map, Observable} from "rxjs";
 
-@Schema()
+@Schema({
+    toObject: {
+        transform: function(doc, ret, options) {
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new UserEntity()));
+        }
+    },
+})
 export class UserEntity extends AbstractEntity{
 
     @Prop({
@@ -36,8 +45,23 @@ export class UserEntity extends AbstractEntity{
     @Prop({
         required: true,
         minLength: 8,
-        select: false
+        // select: false
     })
     @ApiProperty({ example: 'passwordExample'})
+    @Exclude({ toPlainOnly: true })
     password: string;
+}
+
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+        return next.handle().pipe(map(data => {
+            instanceToPlain(this.transform(data))
+            return instanceToPlain(this.transform(data))
+        }));
+    }
+
+    transform(data) {
+        return Array.isArray(data.data) ? data.data.map(obj => obj.toObject()) : data.data.toObject();
+    }
 }

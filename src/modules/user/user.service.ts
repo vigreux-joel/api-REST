@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {CallHandler, ExecutionContext, Injectable, NestInterceptor, UseInterceptors} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {UserEntity} from "./entities/user.entity";
@@ -18,7 +18,7 @@ export class UserService {
     return this.userRepository.create(createUserDto);
   }
 
-    findAll(pageOptionsDto: PageOptionsDto) {
+  async findAll(pageOptionsDto: PageOptionsDto) {
     return this.userRepository.find(null, pageOptionsDto);
   }
 

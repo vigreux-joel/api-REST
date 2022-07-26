@@ -125,6 +125,8 @@ describe('UserController', () => {
   })
 
   describe('update', () => {
+    let vr: string  = 'trggtrgt'
+    vr.replace('s', ' ')
     let response
     beforeAll(async () => {
       payload = {

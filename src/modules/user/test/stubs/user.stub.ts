@@ -2,7 +2,7 @@ import {UserEntity} from "../../entities/user.entity";
 
 export const userStub = (): UserEntity => {
  return {
-     id: 'fakeId',
+     _id: 'fakeId',
      avatar: "",
      createdAt: null,
      firstname: "john",
