@@ -11,6 +11,7 @@ export class AuthService {
     async validateUser(identifier: string, password: string): Promise<boolean|UserEntity> {
         let user:UserEntity
         try{
+            // @ts-ignore
             user = await this.userService.findOne({email: identifier})
         } catch (e){
             return false

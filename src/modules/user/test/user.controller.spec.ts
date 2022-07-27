@@ -14,9 +14,6 @@ import {UserHelper} from "../user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
 import {UserEntity} from "../entities/user.entity";
-import {PageDto} from "../../database/dto/page.dto";
-import {PageMetaDto} from "../../database/dto/page-meta.dto";
-import {Order, PageOptionsDto} from "../../database/dto/page-option.dto";
 
 describe('UserController', () => {
   let userService: UserService;

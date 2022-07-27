@@ -56,12 +56,12 @@ export class UserEntity extends AbstractEntity{
 export class TransformInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         return next.handle().pipe(map(data => {
-            instanceToPlain(this.transform(data))
             return instanceToPlain(this.transform(data))
         }));
     }
 
     transform(data) {
-        return Array.isArray(data.data) ? data.data.map(obj => obj.toObject()) : data.data.toObject();
+        data.data =  Array.isArray(data.data) ? data.data.map(obj => obj.toObject()) : data.data.toObject();
+        return data
     }
 }

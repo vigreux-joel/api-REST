@@ -3,14 +3,16 @@ import {DatabaseHelper as DB} from "./database.helper";
 import {PageDto} from "./dto/page.dto";
 import {PageOptionsDto} from "./dto/page-option.dto";
 import {PageMetaDto} from "./dto/page-meta.dto";
+import {DataResponseDto} from "./dto/data-response.dto";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
   async findOne(
     filterQuery: string|object,
-  ): Promise<T | null> {
-    return this.entityModel.findOne(DB.searchOne(filterQuery)).exec()
+  ): Promise<DataResponseDto<T>> {
+    const findQuery = this.entityModel.findOne(DB.searchOne(filterQuery))
+    return new DataResponseDto<T>(await findQuery)
   }
 
   async find(
@@ -27,8 +29,6 @@ export abstract class DatabaseRepository<T extends Document> {
     }
 
     const itemCount = await this.entityModel.count();
-    // const { entities } = await queryBuilder.getRawAndEntities();
-
 
     const results = await findQuery;
     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
@@ -44,19 +44,21 @@ export abstract class DatabaseRepository<T extends Document> {
   async findOneAndUpdate(
     filterQuery: string|object,
     updateEntityData: UpdateQuery<unknown>
-  ): Promise<T | null> {
-    return this.entityModel.findOneAndUpdate(
-      DB.searchOne(filterQuery),
-      updateEntityData
+  ): Promise<DataResponseDto<T>> {
+    const findQuery = this.entityModel.findOneAndUpdate(
+        DB.searchOne(filterQuery),
+        updateEntityData
     )
+    return new DataResponseDto<T>(await findQuery)
   }
 
-  async findOneAndRemove(filterQuery: string|object): Promise<boolean> {
-    return this.entityModel.findOneAndRemove(DB.searchOne(filterQuery));
+  async findOneAndRemove(filterQuery: string|object): Promise<DataResponseDto<T>> {
+    const findQuery = this.entityModel.findOneAndRemove(DB.searchOne(filterQuery))
+    return new DataResponseDto<T>(await findQuery)
   }
 
-  async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
-    const deleteResult = await this.entityModel.deleteMany(entityFilterQuery);
-    return deleteResult.deletedCount >= 1;
-  }
+  // async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
+  //   const deleteResult = await this.entityModel.deleteMany(entityFilterQuery);
+  //   return deleteResult.deletedCount >= 1;
+  // }
 }

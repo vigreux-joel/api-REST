@@ -17,8 +17,9 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {TransformInterceptor, UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../database/dto/page-option.dto";
-import {ApiPaginatedResponse} from "../database/api/api-paginated.response";
+import {ApiDataResponse, ApiPaginatedResponse} from "../database/api/api-paginated.response";
 import {UserService} from "./user.service";
+import {PageDto} from "../database/dto/page.dto";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -51,7 +52,7 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({summary: 'Get '+UserHelper.entityName+' by id'})
-  @ApiResponse({status: 200, type: UserEntity})
+  @ApiDataResponse(UserEntity)
   async findOne(@Param('id') id: string) {
     try {
       return await this.service.findOne(id);
@@ -64,7 +65,7 @@ export class UserController {
 
   @Patch(':id')
   @ApiOperation({summary: 'Update '+UserHelper.entityName})
-  @ApiResponse({status: 200, type: UserEntity})
+  @ApiDataResponse(UserEntity)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
       return await this.service.update(id, updateUserDto);

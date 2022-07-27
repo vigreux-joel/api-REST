@@ -1,4 +1,4 @@
-import {CallHandler, ExecutionContext, Injectable, NestInterceptor, UseInterceptors} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {UserEntity} from "./entities/user.entity";
@@ -6,6 +6,7 @@ import * as bcrypt from "bcrypt";
 import {UserRepository} from "./user.repository";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../database/dto/page-option.dto";
+import {DataResponseDto} from "../database/dto/data-response.dto";
 
 @Injectable()
 export class UserService {
@@ -22,10 +23,10 @@ export class UserService {
     return this.userRepository.find(null, pageOptionsDto);
   }
 
-  async findOne(filter: string|object): Promise<null|UserEntity> {
-    let result: UserEntity
+  async findOne(filter: string|object): Promise<DataResponseDto<UserEntity>> {
+    let result: DataResponseDto<UserEntity>
     result = await this.userRepository.findOne(filter);
-    if (!result){
+    if (!result.data){
       throw new Error('not found '+UserHelper.entityName);
     }
     return result
