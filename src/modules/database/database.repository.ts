@@ -1,9 +1,9 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 import {DatabaseHelper as DB} from "./database.helper";
-import {PageDto} from "./dto/page.dto";
-import {PageOptionsDto} from "./dto/page-option.dto";
-import {PageMetaDto} from "./dto/page-meta.dto";
-import {DataResponseDto} from "./dto/data-response.dto";
+import {PageDto} from "../../utils/api/dto/page.dto";
+import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
+import {DataResponseDto} from "../../utils/api/dto/data-response.dto";
+import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
@@ -36,9 +36,10 @@ export abstract class DatabaseRepository<T extends Document> {
     return new PageDto(results, pageMetaDto);
   }
 
-  async create(createEntityData: unknown): Promise<T> {
+  async create(createEntityData: unknown): Promise<DataResponseDto<T>> {
     const entity = new this.entityModel(createEntityData);
-    return entity.save()
+    const result = entity.save()
+    return new DataResponseDto<T>(await result)
   }
 
   async findOneAndUpdate(

@@ -1,7 +1,7 @@
 import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {AbstractEntity} from "../../database/AbstractEntity";
-import {classToPlain, Exclude, instanceToPlain} from "class-transformer";
+import {Exclude, instanceToPlain} from "class-transformer";
 import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
 import {map, Observable} from "rxjs";
 
@@ -45,7 +45,6 @@ export class UserEntity extends AbstractEntity{
     @Prop({
         required: true,
         minLength: 8,
-        // select: false
     })
     @ApiProperty({ example: 'passwordExample'})
     @Exclude({ toPlainOnly: true })

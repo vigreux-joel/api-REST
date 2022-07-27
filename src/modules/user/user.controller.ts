@@ -16,10 +16,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {TransformInterceptor, UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
-import {PageOptionsDto} from "../database/dto/page-option.dto";
-import {ApiDataResponse, ApiPaginatedResponse} from "../database/api/api-paginated.response";
 import {UserService} from "./user.service";
-import {PageDto} from "../database/dto/page.dto";
+import {ApiDataResponse} from "../../utils/api/responses/api-data.reponses";
+import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
+import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)

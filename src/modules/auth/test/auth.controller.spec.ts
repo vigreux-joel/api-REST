@@ -9,8 +9,6 @@ import {JwtStrategy} from "../strategies/jwt.strategy";
 import {AuthController} from "../auth.controller";
 import {Test, TestingModule} from "@nestjs/testing";
 import {INestApplication} from "@nestjs/common";
-import {ConfigModule} from "@nestjs/config";
-import {MongooseModule} from "@nestjs/mongoose";
 import {UserSchema} from "../../user/schema/user.schema";
 import {CreateUserDto} from "../../user/dto/create-user.dto";
 import {userStub} from "../../user/test/stubs/user.stub";
@@ -51,11 +49,8 @@ describe('UserController', () => {
     it('should integrate access if not connected', async () => {
       const response = await request(app.getHttpServer())
           .post('/login')
-
       expect(response.status).toBe(401)
       expect(response.body).toEqual({ statusCode: 401, message: 'Unauthorized' })
-
-      expect(1).toBe(1)
     })
 
     let user;
@@ -80,6 +75,7 @@ describe('UserController', () => {
             "identifier": payload.email,
             "password": payload.password
           })
+
       expect(response.body.access_token).not.toBeUndefined()
       expect(response.status).toBe(201)
     })

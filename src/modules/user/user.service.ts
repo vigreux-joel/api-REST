@@ -5,14 +5,14 @@ import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import {UserRepository} from "./user.repository";
 import {UserHelper} from "./user.helper";
-import {PageOptionsDto} from "../database/dto/page-option.dto";
-import {DataResponseDto} from "../database/dto/data-response.dto";
+import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
+import {DataResponseDto} from "../../utils/api/dto/data-response.dto";
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<null|UserEntity> {
+  async create(createUserDto: CreateUserDto): Promise<DataResponseDto<UserEntity>> {
     createUserDto.createdAt = new Date()
     createUserDto.password = await this.hashPassword(createUserDto.password)
 

@@ -9,14 +9,13 @@ export class AuthService {
     constructor(private userService: UserService, private jwtService: JwtService) {}
 
     async validateUser(identifier: string, password: string): Promise<boolean|UserEntity> {
-        let user:UserEntity
+        let user: UserEntity[] | UserEntity
         try{
-            // @ts-ignore
-            user = await this.userService.findOne({email: identifier})
+            user = (await this.userService.findOne({email: identifier})).data
         } catch (e){
             return false
         }
-        if(await bcrypt.compare(password, user.password)){
+        if(user instanceof UserEntity && await bcrypt.compare(password, user.password)){
             return user
         }
     }

@@ -1,10 +1,8 @@
 import {appOption} from "../../../start";
-import {MongooseModule} from "@nestjs/mongoose"
 import {Test, TestingModule} from "@nestjs/testing"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
 import {UserSchema} from "../schema/user.schema";
-import {ConfigModule} from "@nestjs/config";
 import {CreateUserDto} from "../dto/create-user.dto";
 import {UserRepository} from "../user.repository";
 import {INestApplication} from "@nestjs/common";
@@ -53,7 +51,7 @@ describe('UserController', () => {
           continue
         }
 
-        user = {...response.body, password: undefined}
+        user = {...response.body.data, password: undefined}
       }
     })
 
@@ -62,9 +60,9 @@ describe('UserController', () => {
       expect(user).toEqual({
         ...payload,
         id: user.id,
-        password: user.password,
         createdAt: user.createdAt,
-        avatar: undefined
+        avatar: undefined,
+        password: undefined
       });
     })
 
@@ -89,7 +87,7 @@ describe('UserController', () => {
             .get('/'+UserHelper.entityName+'/'+user.id)
 
         expect(response.status).toBe(200)
-        expect(response.body).toEqual(user)
+        expect(response.body.data).toEqual(user)
       })
 
       it('should throw an error when not found user',  async () => {
@@ -143,7 +141,7 @@ describe('UserController', () => {
     })
 
     test('return the modified user', async () => {
-      expect(response.body).toEqual(user)
+      expect(response.body.data).toEqual(user)
     })
   })
 
@@ -154,7 +152,7 @@ describe('UserController', () => {
           .delete('/'+UserHelper.entityName+'/'+user.id)
     })
     test('return the deleted user', async () => {
-      expect(response.body).toEqual(user)
+      expect(response.body.data).toEqual(user)
     })
   })
 

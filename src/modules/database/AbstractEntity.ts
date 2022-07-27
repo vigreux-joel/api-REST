@@ -1,5 +1,4 @@
 import {Prop} from "@nestjs/mongoose";
-import { ObjectId } from "mongodb";
 import {ApiProperty} from "@nestjs/swagger";
 import {Exclude, Expose, Transform} from "class-transformer";
 import {IsMongoId} from "class-validator";
@@ -16,7 +15,7 @@ export abstract class AbstractEntity {
     public id: string
 
     @Exclude()
-    public __v: number
+    public __v?: number
 
     @Prop({
         type: Date,

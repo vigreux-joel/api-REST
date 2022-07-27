@@ -10,6 +10,5 @@ export const userStub = (): UserEntity => {
      password: "Azertyuiop",
      tel: "+33110000000",
      email: 'test@example.com',
-     __v: 0
  }
 }
