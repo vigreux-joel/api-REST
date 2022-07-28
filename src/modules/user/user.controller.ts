@@ -14,12 +14,13 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {TransformInterceptor, UserEntity} from "./entities/user.entity";
+import {UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiDataResponse} from "../../utils/api/responses/api-data.reponses";
 import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
+import {TransformInterceptor} from "../../utils/api/transform.interceptor";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)

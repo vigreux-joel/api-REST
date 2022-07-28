@@ -11,7 +11,7 @@ export class AuthService {
     async validateUser(identifier: string, password: string): Promise<boolean|UserEntity> {
         let user: UserEntity[] | UserEntity
         try{
-            user = (await this.userService.findOne({email: identifier})).data
+            user = (await this.userService.findOne({email: identifier})).items
         } catch (e){
             return false
         }

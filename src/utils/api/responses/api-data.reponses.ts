@@ -13,7 +13,7 @@ export const ApiDataResponse = <TModel extends Type>(
     }
     allOf.push({
         properties: {
-            data:
+            items:
                 (Array.isArray(model))? {
                     type: "array",
                     items: {

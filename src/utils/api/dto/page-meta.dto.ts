@@ -3,34 +3,38 @@ import {PageOptionsDto} from "./page-option.dto";
 
 export type PageMetaDtoParameters = {
     pageOptionsDto: PageOptionsDto;
-    itemCount: number;
+    totalItems: number;
 }
 
-export class PageMetaDto {
-    @ApiProperty()
+export class PageMetaDto implements PageOptionsDto{
+    @ApiProperty({example: 1})
     readonly page: number;
 
-    @ApiProperty()
-    readonly take: number;
+    @ApiProperty({example: 10})
+    readonly limit: number;
 
-    @ApiProperty()
-    readonly itemCount: number;
+    @ApiProperty({example: 1})
+    readonly totalItems: number;
 
-    @ApiProperty()
-    readonly pageCount: number;
+    @ApiProperty({example: 1})
+    readonly totalPage: number;
 
-    @ApiProperty()
+    @ApiProperty({example: false})
     readonly hasPreviousPage: boolean;
 
-    @ApiProperty()
+    @ApiProperty({example: false})
     readonly hasNextPage: boolean;
 
-    constructor({pageOptionsDto, itemCount }: PageMetaDtoParameters) {
+    constructor({pageOptionsDto, totalItems }: PageMetaDtoParameters) {
         this.page = pageOptionsDto.page;
-        this.take = pageOptionsDto.take;
-        this.itemCount = itemCount;
-        this.pageCount = Math.ceil(this.itemCount / this.take);
+        this.limit = pageOptionsDto.limit;
+        this.totalItems = totalItems;
+        this.totalPage = Math.ceil(this.totalItems / this.limit);
         this.hasPreviousPage = this.page > 1;
-        this.hasNextPage = this.page < this.pageCount;
+        this.hasNextPage = this.page < this.totalPage;
+    }
+
+    get skip(): number {
+        return 0;
     }
 }

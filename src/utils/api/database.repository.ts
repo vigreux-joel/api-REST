@@ -1,9 +1,9 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
-import {DatabaseHelper as DB} from "./database.helper";
-import {PageDto} from "../../utils/api/dto/page.dto";
-import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {DataResponseDto} from "../../utils/api/dto/data-response.dto";
-import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
+import {DatabaseHelper as DB} from "../../modules/database/database.helper";
+import {PageDto} from "./dto/page.dto";
+import {PageOptionsDto} from "./dto/page-option.dto";
+import {DataResponseDto} from "./dto/data-response.dto";
+import {PageMetaDto} from "./dto/page-meta.dto";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
@@ -24,14 +24,14 @@ export abstract class DatabaseRepository<T extends Document> {
           createdAt: -1
         })
         .skip(pageOptionsDto.skip)
-    if (pageOptionsDto.take) {
-      findQuery.limit(pageOptionsDto.take);
+    if (pageOptionsDto.limit) {
+      findQuery.limit(pageOptionsDto.limit);
     }
 
-    const itemCount = await this.entityModel.count();
+    const totalItems = await this.entityModel.count();
 
     const results = await findQuery;
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    const pageMetaDto = new PageMetaDto({pageOptionsDto, totalItems });
 
     return new PageDto(results, pageMetaDto);
   }

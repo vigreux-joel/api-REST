@@ -26,7 +26,7 @@ export class UserService {
   async findOne(filter: string|object): Promise<DataResponseDto<UserEntity>> {
     let result: DataResponseDto<UserEntity>
     result = await this.userRepository.findOne(filter);
-    if (!result.data){
+    if (!result.items){
       throw new Error('not found '+UserHelper.entityName);
     }
     return result
