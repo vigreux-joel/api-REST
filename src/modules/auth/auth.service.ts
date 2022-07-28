@@ -15,7 +15,7 @@ export class AuthService {
         } catch (e){
             return false
         }
-        if(user instanceof UserEntity && await bcrypt.compare(password, user.password)){
+        if(!Array.isArray(user) && await bcrypt.compare(password, user.password)){
             return user
         }
     }
