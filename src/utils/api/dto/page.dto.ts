@@ -1,13 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { PageMetaDto } from "./page-meta.dto";
-import {DataResponseDto} from "./data-response.dto";
 
-export class PageDto<T> extends DataResponseDto<T>{
+export class PageDto<T>{
+    @ApiProperty()
+    items: T[];
+
     @ApiProperty({ type: () => PageMetaDto })
     readonly meta: PageMetaDto;
 
     constructor(data: T[], meta: PageMetaDto) {
-        super(data);
+        this.items = data;
         this.meta = meta;
     }
 }

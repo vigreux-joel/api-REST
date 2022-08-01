@@ -1,6 +1,6 @@
 import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
-import {AbstractEntity} from "../../database/AbstractEntity";
+import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 
 @Schema({

@@ -11,11 +11,11 @@ export class AuthService {
     async validateUser(identifier: string, password: string): Promise<boolean|UserEntity> {
         let user: UserEntity[] | UserEntity
         try{
-            user = (await this.userService.findOne({email: identifier})).items
+            user = await this.userService.findOne({email: identifier})
         } catch (e){
             return false
         }
-        if(!Array.isArray(user) && await bcrypt.compare(password, user.password)){
+        if(await bcrypt.compare(password, user.password)){
             return user
         }
     }

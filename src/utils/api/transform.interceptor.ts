@@ -1,25 +1,28 @@
 import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
 import {map, Observable} from "rxjs";
 import {instanceToPlain} from "class-transformer";
-import {UserEntity} from "../../modules/user/entities/user.entity";
 import {Model} from "mongoose";
+import {PageDto} from "./dto/page.dto";
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         return next.handle().pipe(map(response => {
-            return instanceToPlain(this.transform(response))
+            let result = this.transform(response)
+            return instanceToPlain(result)
         }));
     }
 
     transform(response) {
-        return Object.values(response).map((value)=>{
-            if(value instanceof Model){
-                return value.toObject()
-            }
-            if(Array.isArray(value)){
-                return value.map(value => value.toObject())
-            }
-            return value
-        })
+        if(response instanceof PageDto){
+            response.items = response.items.map(value => {
+                if(value instanceof Model){
+                    return value.toObject()
+                }
+            })
+        }
+        if(response instanceof Model){
+            response = response.toObject()
+        }
+        return response
     }
 }

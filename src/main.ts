@@ -14,7 +14,7 @@ async function bootstrap() {
   await appOption(app)
 
   await app.listen(port);
-  Logger.log(`Server started running on http://localhost:${port}`, 'Bootstrap');
+  Logger.log(`Server started running on http://localhost:${port}/api`, 'Bootstrap');
 }
 
 bootstrap();

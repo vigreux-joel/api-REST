@@ -3,16 +3,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
-import {UserRepository} from "./user.repository";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {DataResponseDto} from "../../utils/api/dto/data-response.dto";
+import {UserRepository} from "./user.repository";
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<DataResponseDto<UserEntity>> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     createUserDto.createdAt = new Date()
     createUserDto.password = await this.hashPassword(createUserDto.password)
 
@@ -23,10 +22,10 @@ export class UserService {
     return this.userRepository.find(null, pageOptionsDto);
   }
 
-  async findOne(filter: string|object): Promise<DataResponseDto<UserEntity>> {
-    let result: DataResponseDto<UserEntity>
+  async findOne(filter: string|object): Promise<UserEntity> {
+    let result: UserEntity
     result = await this.userRepository.findOne(filter);
-    if (!result.items){
+    if (!result){
       throw new Error('not found '+UserHelper.entityName);
     }
     return result

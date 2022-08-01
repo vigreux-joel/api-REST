@@ -51,7 +51,7 @@ describe('UserController', () => {
           continue
         }
 
-        user = {...response.body.data, password: undefined}
+        user = {...response.body, password: undefined}
       }
     })
 
@@ -87,7 +87,7 @@ describe('UserController', () => {
             .get('/'+UserHelper.entityName+'/'+user.id)
 
         expect(response.status).toBe(200)
-        expect(response.body.data).toEqual(user)
+        expect(response.body).toEqual(user)
       })
 
       it('should throw an error when not found user',  async () => {
@@ -104,15 +104,15 @@ describe('UserController', () => {
         const response = await request(app.getHttpServer())
             .get('/'+UserHelper.entityName)
             .query({page: 1})
-            .query({take: 1})
+            .query({limit: 1})
 
         expect(response.status).toBe(200)
         expect(response.body.meta).toEqual({
           ...response.body.meta,
           page: 1,
-          take: 1,
+          limit: 1,
         })
-        expect(response.body.data).toEqual(
+        expect(response.body.items).toEqual(
             [user]
         );
       })
@@ -120,8 +120,6 @@ describe('UserController', () => {
   })
 
   describe('update', () => {
-    let vr: string  = 'trggtrgt'
-    vr.replace('s', ' ')
     let response
     beforeAll(async () => {
       payload = {
@@ -141,7 +139,7 @@ describe('UserController', () => {
     })
 
     test('return the modified user', async () => {
-      expect(response.body.data).toEqual(user)
+      expect(response.body).toEqual(user)
     })
   })
 
@@ -152,7 +150,7 @@ describe('UserController', () => {
           .delete('/'+UserHelper.entityName+'/'+user.id)
     })
     test('return the deleted user', async () => {
-      expect(response.body.data).toEqual(user)
+      expect(response.body).toEqual(user)
     })
   })
 

@@ -1,18 +1,22 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
-import {DatabaseHelper as DB} from "../../modules/database/database.helper";
-import {PageDto} from "./dto/page.dto";
-import {PageOptionsDto} from "./dto/page-option.dto";
-import {DataResponseDto} from "./dto/data-response.dto";
-import {PageMetaDto} from "./dto/page-meta.dto";
+import {DatabaseHelper as DB} from "./database.helper";
+import {PageDto} from "../../utils/api/dto/page.dto";
+import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
+import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
+  async create(createEntityData: unknown): Promise<any> {
+    const entity = new this.entityModel(createEntityData);
+    return entity.save()
+  }
+
+
   async findOne(
     filterQuery: string|object,
-  ): Promise<DataResponseDto<T>> {
-    const findQuery = this.entityModel.findOne(DB.searchOne(filterQuery))
-    return new DataResponseDto<T>(await findQuery)
+  ): Promise<T> {
+    return this.entityModel.findOne(DB.searchOne(filterQuery))
   }
 
   async find(
@@ -36,26 +40,18 @@ export abstract class DatabaseRepository<T extends Document> {
     return new PageDto(results, pageMetaDto);
   }
 
-  async create(createEntityData: unknown): Promise<DataResponseDto<T>> {
-    const entity = new this.entityModel(createEntityData);
-    const result = entity.save()
-    return new DataResponseDto<T>(await result)
-  }
-
   async findOneAndUpdate(
     filterQuery: string|object,
     updateEntityData: UpdateQuery<unknown>
-  ): Promise<DataResponseDto<T>> {
-    const findQuery = this.entityModel.findOneAndUpdate(
+  ): Promise<T> {
+    return  this.entityModel.findOneAndUpdate(
         DB.searchOne(filterQuery),
         updateEntityData
     )
-    return new DataResponseDto<T>(await findQuery)
   }
 
-  async findOneAndRemove(filterQuery: string|object): Promise<DataResponseDto<T>> {
-    const findQuery = this.entityModel.findOneAndRemove(DB.searchOne(filterQuery))
-    return new DataResponseDto<T>(await findQuery)
+  async findOneAndRemove(filterQuery: string|object): Promise<T> {
+    return  this.entityModel.findOneAndRemove(DB.searchOne(filterQuery))
   }
 
   // async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
