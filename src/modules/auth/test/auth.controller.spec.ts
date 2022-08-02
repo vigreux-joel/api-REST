@@ -81,8 +81,9 @@ describe('UserController', () => {
     })
 
     afterAll(async () => {
-      await request(app.getHttpServer())
-          .delete('/user/'+user._id)
+      const response = await request(app.getHttpServer())
+          .delete('/user/'+user.id)
+      expect(response.status).toBe(200)
     });
   })
 

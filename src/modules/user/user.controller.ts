@@ -9,11 +9,11 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors
+  UseInterceptors, UseGuards, Req
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserEntity} from "./entities/user.entity";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
@@ -21,12 +21,14 @@ import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
 import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {TransformInterceptor} from "../../utils/api/transform.interceptor";
+import {LocalAuthGuard} from "../auth/guards/local-auth.guard";
+import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
-  constructor(private readonly service: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiTags('Auth')
@@ -34,7 +36,7 @@ export class UserController {
   @ApiResponse({status: 201, type: UserEntity})
   async create(@Body() createUserDto: CreateUserDto) {
     try {
-      return await this.service.create(createUserDto);
+      return await this.userService.create(createUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
@@ -45,10 +47,12 @@ export class UserController {
   }
 
   @Get()
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(UserEntity)
-  async findAll(@Query() pageOptionsDto: PageOptionsDto) {
-    return await this.service.findAll(pageOptionsDto);
+  async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
+    return await this.userService.findAll(pageOptionsDto);
   }
 
   @Get(':id')
@@ -56,7 +60,7 @@ export class UserController {
   @ApiEntityResponse(UserEntity)
   async findOne(@Param('id') id: string) {
     try {
-      return await this.service.findOne(id);
+      return await this.userService.findOne(id);
     } catch (e) {
       throw new HttpException({
         error: e.message
@@ -69,7 +73,7 @@ export class UserController {
   @ApiEntityResponse(UserEntity)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return await this.service.update(id, updateUserDto);
+      return await this.userService.update(id, updateUserDto);
     } catch (e) {
       throw new HttpException({
         error: e.message,
@@ -83,7 +87,7 @@ export class UserController {
   @ApiResponse({status: 200, type: UserEntity})
   async remove(@Param('id') id: string) {
     try {
-      return await this.service.remove(id);
+      return await this.userService.remove(id);
     } catch (e) {
       throw new HttpException({
         error: e.message

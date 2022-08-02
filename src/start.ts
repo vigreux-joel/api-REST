@@ -7,10 +7,12 @@ export async function appOption(app: INestApplication) {
     app.useGlobalPipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: false, transform: true }));
 
     const config = new DocumentBuilder()
-        .setTitle('Cats example')
-        .setDescription('The cats API description')
+        .setTitle(process.env.SITE_NAME)
+        .setDescription('The '+process.env.SITE_NAME+' API description')
         .setVersion('1.0')
-        .build();
+        .addBearerAuth()
+        .build()
+
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
 
