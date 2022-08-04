@@ -1,10 +1,12 @@
 import './helper/extension'
 import 'dotenv/config';
-import {INestApplication, ValidationPipe} from "@nestjs/common";
+import {ClassSerializerInterceptor, INestApplication, ValidationPipe} from "@nestjs/common";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {Reflector} from "@nestjs/core";
 
 export async function appOption(app: INestApplication) {
     app.useGlobalPipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: false, transform: true }));
+    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
     const config = new DocumentBuilder()
         .setTitle(process.env.SITE_NAME)

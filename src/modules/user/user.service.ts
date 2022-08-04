@@ -12,10 +12,12 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    createUserDto.createdAt = new Date()
     createUserDto.password = await this.hashPassword(createUserDto.password)
 
-    return this.userRepository.create(createUserDto);
+    return this.userRepository.create({
+      ...createUserDto,
+      createdAt: new Date()
+    });
   }
 
   async findAll(pageOptionsDto: PageOptionsDto) {

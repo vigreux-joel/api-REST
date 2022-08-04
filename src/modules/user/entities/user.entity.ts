@@ -2,6 +2,7 @@ import {Prop, Schema} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
+import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 
 @Schema({
     toObject: {
@@ -15,12 +16,20 @@ export class UserEntity extends AbstractEntity{
     @Prop({
         required: true,
     })
+    @IsNotEmpty()
+    @MinLength(3)
+    @ApiProperty()
+    @IsAlpha()
     @ApiProperty({ example: 'john'})
     firstname: string;
 
     @Prop({
         required: true,
     })
+    @IsNotEmpty()
+    @MinLength(3)
+    @ApiProperty()
+    @IsAlpha()
     @ApiProperty({ example: 'snow'})
     lastname: string;
 
@@ -28,7 +37,10 @@ export class UserEntity extends AbstractEntity{
         required: true,
         unique: true,
     })
-    @ApiProperty({ example: '+33100000000'})
+    @IsNotEmpty()
+    @MinLength(3)
+    @IsEmail()
+    @ApiProperty({ example: 'example@hotmail.com'})
     email: string;
 
     @Prop({
@@ -37,6 +49,8 @@ export class UserEntity extends AbstractEntity{
 
     @Prop({
     })
+    @IsPhoneNumber()
+    @IsOptional()
     @ApiPropertyOptional({ example: '+33100000000'})
     tel: string;
 
@@ -44,6 +58,8 @@ export class UserEntity extends AbstractEntity{
         required: true,
         minLength: 8,
     })
+    @IsNotEmpty()
+    @MinLength(8)
     @ApiProperty({ example: 'passwordExample'})
     @Exclude({ toPlainOnly: true })
     password: string;

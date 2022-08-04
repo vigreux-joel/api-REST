@@ -56,6 +56,7 @@ describe('UserController', () => {
     })
 
     it('should return a user', () => {
+
       expect(response.status).toBe(201)
       expect(user).toEqual({
         ...payload,
@@ -86,8 +87,8 @@ describe('UserController', () => {
         const response = await request(app.getHttpServer())
             .get('/'+UserHelper.entityName+'/'+user.id)
 
-        expect(response.status).toBe(200)
         expect(response.body).toEqual(user)
+        expect(response.status).toBe(200)
       })
 
       it('should throw an error when not found user',  async () => {

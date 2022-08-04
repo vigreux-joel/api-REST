@@ -5,9 +5,8 @@ import {IsMongoId} from "class-validator";
 
 export abstract class AbstractEntity {
 
-    @IsMongoId()
     @Expose({ name: 'id' })
-    @Transform((value) => value.obj._id.toString())
+    @Transform((value) => value.obj._id?.toString())
     public _id?: string;
 
     @IsMongoId()

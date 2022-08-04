@@ -9,7 +9,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors, UseGuards, Req
+  UseInterceptors, UseGuards, Req, ClassSerializerInterceptor
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -26,6 +26,7 @@ import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly userService: UserService) {}
