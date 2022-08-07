@@ -9,12 +9,12 @@ import {JwtStrategy} from "../strategies/jwt.strategy";
 import {AuthController} from "../auth.controller";
 import {Test, TestingModule} from "@nestjs/testing";
 import {INestApplication} from "@nestjs/common";
-import {UserSchema} from "../../user/schema/user.schema";
 import {CreateUserDto} from "../../user/dto/create-user.dto";
 import {userStub} from "../../user/test/stubs/user.stub";
 import {UserHelper} from "../../user/user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
+import {UserSchema} from "../../user/entities/user.entity";
 
 describe('UserController', () => {
   let authService: AuthService

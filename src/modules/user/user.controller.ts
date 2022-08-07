@@ -23,13 +23,18 @@ import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {TransformInterceptor} from "../../utils/api/transform.interceptor";
 import {LocalAuthGuard} from "../auth/guards/local-auth.guard";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {RoleService} from "../role/role.service";
+import {PermissionEntity} from "../role/entities/permission.entity";
+import {CreateRoleDto} from "../role/dto/create-role.dto";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly roleService: RoleService) {
+    this.roleService.registerDefaultPermission('user.*', 'ceci est un descfdfripgtion')
+  }
 
   @Post()
   @ApiTags('Auth')

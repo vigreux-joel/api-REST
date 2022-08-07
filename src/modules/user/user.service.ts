@@ -6,6 +6,7 @@ import * as bcrypt from "bcrypt";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {UserRepository} from "./user.repository";
+import {RoleService} from "../role/role.service";
 
 @Injectable()
 export class UserService {

@@ -2,7 +2,6 @@ import {appOption} from "../../../start";
 import {Test, TestingModule} from "@nestjs/testing"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
-import {UserSchema} from "../schema/user.schema";
 import {CreateUserDto} from "../dto/create-user.dto";
 import {UserRepository} from "../user.repository";
 import {INestApplication} from "@nestjs/common";
@@ -11,7 +10,7 @@ import * as request from 'supertest';
 import {UserHelper} from "../user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
-import {UserEntity} from "../entities/user.entity";
+import {UserEntity, UserSchema} from "../entities/user.entity";
 
 describe('UserController', () => {
   let userService: UserService;

@@ -1,8 +1,9 @@
-import {Prop, Schema} from "@nestjs/mongoose";
+import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
+import {Document} from "mongoose";
 
 @Schema({
     toObject: {
@@ -18,7 +19,6 @@ export class UserEntity extends AbstractEntity{
     })
     @IsNotEmpty()
     @MinLength(3)
-    @ApiProperty()
     @IsAlpha()
     @ApiProperty({ example: 'john'})
     firstname: string;
@@ -28,7 +28,6 @@ export class UserEntity extends AbstractEntity{
     })
     @IsNotEmpty()
     @MinLength(3)
-    @ApiProperty()
     @IsAlpha()
     @ApiProperty({ example: 'snow'})
     lastname: string;
@@ -65,3 +64,5 @@ export class UserEntity extends AbstractEntity{
     password: string;
 }
 
+export type UserDocument = UserEntity & Document;
+export const UserSchema = SchemaFactory.createForClass(UserEntity);
