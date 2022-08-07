@@ -51,7 +51,7 @@ export class RoleController {
   // @ApiOperation({summary: 'Get all ' + RoleHelper.entityName + 's'})
   // @ApiPaginatedResponse(RoleEntity)
   // async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
-  //   return await this.roleService.findAll(pageOptionsDto);
+  //   return this.roleService.findAll(pageOptionsDto);
   // }
   //
   // @Get(':id')

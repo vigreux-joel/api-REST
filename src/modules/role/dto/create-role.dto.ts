@@ -1,5 +1,3 @@
-import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
-import {ApiProperty, OmitType} from "@nestjs/swagger";
-import {RoleEntity} from "../entities/role.entity";
+import {RoleDto} from "./role.dto";
 
-export class CreateRoleDto extends RoleEntity{}
+export class CreateRoleDto extends RoleDto{}

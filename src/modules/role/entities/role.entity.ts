@@ -6,32 +6,23 @@ import {PermissionEntity} from "./permission.entity";
 import mongoose, {Document} from "mongoose";
 import {IntersectionType} from "@nestjs/mapped-types";
 
-export class RoleEntityProperties{
+export class RoleProperties {
 
-    @Prop({
-        required: true,
-    })
     @IsNotEmpty()
     @MinLength(3)
     @IsAlpha()
     @ApiProperty({ example: 'ROLE_ADMIN'})
     name: string
 
-    @Prop({
-        required: true,
-    })
+
     @IsBoolean()
     @ApiProperty({ example: true})
     default: boolean
 
-    @Prop({
-        required: true,
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Permission' }]
-    })
     permissions: PermissionEntity[]
 }
 
 export class RoleEntity extends IntersectionType(
-    RoleEntityProperties,
+    RoleProperties,
     AbstractEntity,
 ) {}
