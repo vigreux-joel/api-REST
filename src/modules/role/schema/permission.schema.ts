@@ -4,24 +4,28 @@ import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import mongoose, {Document} from "mongoose";
-import {RoleEntity, RoleEntityProperties} from "./role.entity";
-import {IntersectionType} from "@nestjs/mapped-types";
+import {PermissionEntity, PermissionEntityProperties} from "../entities/permission.entity";
+import {RoleEntity} from "../entities/role.entity";
 
-export class PermissionEntityProperties{
+@Schema({
+    toObject: {
+        transform: function(doc, ret, options) {
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new PermissionEntity()));
+        }
+    },
+})
+class SchemaProperties implements PermissionEntityProperties{
+
     @Prop({
         required: true,
         unique: true,
     })
-    @IsNotEmpty()
-    @IsAlpha()
     name: string
 
     @Prop({
         required: true,
         unique: true,
     })
-    @IsNotEmpty()
-    @IsAlpha()
     description: string
 
     @Prop({
@@ -31,7 +35,5 @@ export class PermissionEntityProperties{
     roles: RoleEntity[]
 }
 
-export class PermissionEntity extends IntersectionType(
-    PermissionEntityProperties,
-    AbstractEntity,
-) {}
+export type PermissionDocument = SchemaProperties & Document
+export const PermissionSchema = SchemaFactory.createForClass(SchemaProperties)

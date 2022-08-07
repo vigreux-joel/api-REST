@@ -9,18 +9,38 @@ import {RoleRepository} from "./repositories/role.repository";
 import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
 import {UserHelper} from "../user/user.helper";
+import {InjectModel} from "@nestjs/mongoose";
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly roleRepository: RoleRepository, private readonly permissionRepository: PermissionRepository) {
+  constructor(@InjectModel('Role') private roleRepository, private readonly permissionRepository: PermissionRepository) {
     permissionRepository.resetDefaultPermission()
   }
 
-  async registerDefaultPermission(name: string, description: string): Promise<void>{
+  async resetDefaultPermission() {
+    this.permissionRepository.deleteMany({ name: new RegExp(RoleHelper.prefixDefaultPermission) })
+  }
+
+  async registerDefaultPermission(name: string, description: string): Promise<PermissionEntity>{
     let permission = new PermissionEntity()
     permission.name = RoleHelper.prefixDefaultPermission+'.'+name
+    permission.description = description;
+    return this.permissionRepository.create(permission)
+  }
+
+  async registerPermission(name: string, description: string): Promise<PermissionEntity>{
+    let permission = new PermissionEntity()
+    permission.name = name
     permission.description = description
     return this.permissionRepository.create(permission)
+  }
+
+  async registerRole(name: string, permissions: PermissionEntity[], lock:boolean = true): Promise<PermissionEntity>{
+    let role = new RoleEntity()
+    role.name = name
+    role.permissions = permissions
+    role.default = true
+    return  this.roleRepository.create(role);
   }
 
   // async create(createRoleDto: CreateRoleDto): Promise<RoleEntity> {

@@ -33,7 +33,42 @@ import {CreateRoleDto} from "../role/dto/create-role.dto";
 @Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly userService: UserService, private readonly roleService: RoleService) {
-    this.roleService.registerDefaultPermission('user.*', 'ceci est un descfdfripgtion')
+    this.createRole()
+  }
+  async createRole(){
+    // let admin ={
+    //   default: true,
+    //   permissions: [
+    //     'user.*'
+    //   ]
+    // }
+    // let self ={
+    //   default: true,
+    //   permissions: [
+    //     'user.read.*',
+    //     'user.write.*',
+    //     'user.update.*',
+    //   ]
+    // }
+    // // let default ={
+    // //   name: 'default',
+    // //   default: true,
+    // //   permissions: [
+    // //     'user.read.firstname',
+    // //     'user.read.lastname',
+    // //   ]
+    // // }
+
+    const userAdmin = await this.roleService.registerPermission('user.*', 'allows to manage all')
+    const userReadAll = await this.roleService.registerPermission('user.read.*', 'allows to read all')
+    const userWriteAll = await this.roleService.registerPermission('user.write.*', 'allows to write all')
+    const userUpdateAll = await this.roleService.registerPermission('user.update.*', 'allows to update all')
+    const userReadFirstName = await this.roleService.registerPermission('user.read.firstname', 'allows to read the firstname')
+    const userReadLastName = await this.roleService.registerPermission('user.read.lastname', 'allows to read the lastname')
+
+    this.roleService.registerRole('default', [userReadFirstName,userReadLastName])
+    this.roleService.registerRole('self', [userWriteAll,userReadAll,userUpdateAll])
+    this.roleService.registerRole('admin', [userAdmin])
   }
 
   @Post()

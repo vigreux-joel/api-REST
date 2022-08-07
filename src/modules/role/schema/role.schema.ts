@@ -2,26 +2,26 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {ApiProperty} from "@nestjs/swagger";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {IsAlpha, IsBoolean, IsNotEmpty, MinLength} from "class-validator";
-import {PermissionEntity} from "./permission.entity";
 import mongoose, {Document} from "mongoose";
-import {IntersectionType} from "@nestjs/mapped-types";
+import {RoleEntity, RoleEntityProperties} from "../entities/role.entity";
+import {PermissionEntity} from "../entities/permission.entity";
 
-export class RoleEntityProperties{
-
+@Schema({
+    toObject: {
+        transform: function(doc, ret, options) {
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new RoleEntity()));
+        }
+    },
+})
+class SchemaProperties implements RoleEntityProperties{
     @Prop({
         required: true,
     })
-    @IsNotEmpty()
-    @MinLength(3)
-    @IsAlpha()
-    @ApiProperty({ example: 'ROLE_ADMIN'})
     name: string
 
     @Prop({
         required: true,
     })
-    @IsBoolean()
-    @ApiProperty({ example: true})
     default: boolean
 
     @Prop({
@@ -31,7 +31,5 @@ export class RoleEntityProperties{
     permissions: PermissionEntity[]
 }
 
-export class RoleEntity extends IntersectionType(
-    RoleEntityProperties,
-    AbstractEntity,
-) {}
+export type RoleDocument = SchemaProperties & Document
+export const RoleSchema = SchemaFactory.createForClass(SchemaProperties);

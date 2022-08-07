@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import {FilterQuery, Model} from "mongoose";
 import {RoleHelper} from "../role.helper";
 import {DatabaseRepository} from "../../database/database.repository";
-import {RoleDocument} from "../entities/role.entity";
+import {RoleDocument} from "../schema/role.schema";
 
 @Injectable()
 export class RoleRepository extends DatabaseRepository<RoleDocument> {

@@ -2,9 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import {FilterQuery, Model} from "mongoose";
 import {DatabaseRepository} from "../../database/database.repository";
-import {PermissionDocument} from "../entities/permission.entity";
-import {RoleDocument} from "../entities/role.entity";
 import {RoleHelper} from "../role.helper";
+import {PermissionDocument} from "../schema/permission.schema";
 
 @Injectable()
 export class PermissionRepository extends DatabaseRepository<PermissionDocument> {

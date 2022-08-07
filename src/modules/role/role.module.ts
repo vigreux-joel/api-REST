@@ -4,9 +4,9 @@ import { RoleController } from './role.controller';
 import {RoleRepository} from "./repositories/role.repository";
 import {RoleHelper} from "./role.helper";
 import {DatabaseHelper} from "../database/database.helper";
-import {RoleSchema} from "./entities/role.entity";
 import {PermissionRepository} from "./repositories/permission.repository";
-import {PermissionSchema} from "./entities/permission.entity";
+import {PermissionSchema} from "./schema/permission.schema";
+import {RoleSchema} from "./schema/role.schema";
 
 @Module({
   imports: [

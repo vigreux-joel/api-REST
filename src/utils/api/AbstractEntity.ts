@@ -3,7 +3,7 @@ import {ApiProperty} from "@nestjs/swagger";
 import {Exclude, Expose, Transform} from "class-transformer";
 import {IsMongoId} from "class-validator";
 
-export abstract class AbstractEntity {
+export class AbstractEntity {
 
     @Expose({ name: 'id' })
     @Transform((value) => value.obj._id?.toString())
