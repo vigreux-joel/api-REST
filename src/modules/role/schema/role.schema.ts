@@ -3,8 +3,8 @@ import {ApiProperty} from "@nestjs/swagger";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {IsAlpha, IsBoolean, IsNotEmpty, MinLength} from "class-validator";
 import mongoose, {Document} from "mongoose";
-import {RoleEntity, RoleProperties} from "../entities/role.entity";
 import {PermissionEntity} from "../entities/permission.entity";
+import {RoleEntity, RoleInterface} from "../entities/role.entity";
 
 @Schema({
     toObject: {
@@ -13,7 +13,7 @@ import {PermissionEntity} from "../entities/permission.entity";
         }
     },
 })
-class SchemaProperties implements RoleProperties{
+class SchemaProperties implements RoleInterface{
     @Prop({
         required: true,
     })
@@ -33,7 +33,3 @@ class SchemaProperties implements RoleProperties{
 
 export type RoleDocument = SchemaProperties & Document
 export const RoleSchema = SchemaFactory.createForClass(SchemaProperties);
-
-// RoleSchema.pre('save', function () {
-//     console.log(this.permissions[0])
-// });

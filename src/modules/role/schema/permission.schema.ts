@@ -4,7 +4,7 @@ import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import mongoose, {Document} from "mongoose";
-import {PermissionEntity, PermissionEntityProperties} from "../entities/permission.entity";
+import {PermissionEntity, PermissionInterface} from "../entities/permission.entity";
 import {RoleEntity} from "../entities/role.entity";
 
 @Schema({
@@ -14,7 +14,7 @@ import {RoleEntity} from "../entities/role.entity";
         }
     },
 })
-class SchemaProperties implements PermissionEntityProperties{
+class SchemaProperties implements PermissionInterface{
 
     @Prop({
         required: true,

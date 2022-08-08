@@ -6,7 +6,7 @@ import * as bcrypt from "bcrypt";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {UserRepository} from "./user.repository";
-import {RoleService} from "../role/role.service";
+import {ReadUserDto} from "./dto/read-user.dto";
 
 @Injectable()
 export class UserService {
@@ -25,8 +25,8 @@ export class UserService {
     return this.userRepository.find(null, pageOptionsDto);
   }
 
-  async findOne(filter: string|object): Promise<UserEntity> {
-    let result: UserEntity
+  async findOne(filter: string|object): Promise<ReadUserDto> {
+    let result: ReadUserDto
     result = await this.userRepository.findOne(filter);
     if (!result){
       throw new Error('not found '+UserHelper.entityName);
