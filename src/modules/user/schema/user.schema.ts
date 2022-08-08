@@ -1,7 +1,9 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
-import {Document} from "mongoose";
+import mongoose, {Document} from "mongoose";
 import {UserEntity} from "../entities/user.entity";
 import {UserInterface} from "../interfaces/user.interface";
+import {RoleEntity} from "../../role/entities/role.entity";
+import {RoleHelper} from "../../role/role.helper";
 
 @Schema({
     toObject: {
@@ -41,6 +43,11 @@ class SchemaProperties implements UserInterface{
         minLength: 8,
     })
     password: string;
+        @Prop({
+        required: true,
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: RoleHelper.modelName }]
+    })
+    roles: RoleEntity
 }
 
 export type UserDocument = SchemaProperties & Document;

@@ -9,11 +9,11 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors, Req, ClassSerializerInterceptor
+  UseInterceptors, Req, ClassSerializerInterceptor, UseGuards
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
@@ -22,6 +22,7 @@ import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {TransformInterceptor} from "../../utils/api/transform.interceptor";
 import {RoleService} from "../role/role.service";
 import {ReadUserDto} from "./dto/read-user.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -65,6 +66,8 @@ export class UserController {
     this.roleService.registerRole('default', [userReadFirstName,userReadLastName])
     this.roleService.registerRole('self', [userWriteAll,userReadAll,userUpdateAll])
     this.roleService.registerRole('admin', [userAdmin])
+
+
   }
 
   @Post()
@@ -89,6 +92,8 @@ export class UserController {
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(ReadUserDto)
   async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
+    let userTest = await this.userService.findOne('62f10830059dfb86e5dde47b')
+    console.log(userTest)
     return await this.userService.findAll(pageOptionsDto);
   }
 

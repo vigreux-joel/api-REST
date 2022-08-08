@@ -1,6 +1,7 @@
 import {ApiProperty, ApiPropertyOptional, OmitType} from "@nestjs/swagger";
 import {UserEntity} from "../entities/user.entity";
 import {UserInterface} from "../interfaces/user.interface";
+import {RoleEntity} from "../../role/entities/role.entity";
 
 export class ReadUserDto implements UserInterface{
 
@@ -20,4 +21,7 @@ export class ReadUserDto implements UserInterface{
 
     @ApiProperty({ example: 'passwordExample'})
     password: string;
+
+    @ApiProperty({ type: RoleEntity})
+    roles: RoleEntity
 }

@@ -2,8 +2,11 @@ import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import {UserInterface} from "../interfaces/user.interface";
+import { RoleEntity } from "src/modules/role/entities/role.entity";
 
-export class UserEntity extends AbstractEntity implements UserInterface{
+export class UserEntity extends AbstractEntity implements UserInterface {
+
+    roles: RoleEntity;
 
     @IsNotEmpty()
     @MinLength(3)

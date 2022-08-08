@@ -17,13 +17,14 @@ import {RoleInterface} from "../interfaces/role.interface";
 class SchemaProperties implements RoleInterface{
     @Prop({
         required: true,
+        unique: true
     })
-    name: string
+    name: string;
 
     @Prop({
         required: true,
     })
-    default: boolean
+    default: boolean;
 
     @Prop({
         required: true,
