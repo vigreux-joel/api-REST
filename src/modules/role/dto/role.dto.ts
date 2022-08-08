@@ -3,7 +3,7 @@ import {ApiProperty} from "@nestjs/swagger";
 import {PermissionEntity} from "../entities/permission.entity";
 import {RoleProperties} from "../entities/role.entity";
 
-export class RoleDto extends RoleProperties{
+export class RoleDto implements RoleProperties{
 
     @ApiProperty({ example: 'ROLE_ADMIN'})
     name: string

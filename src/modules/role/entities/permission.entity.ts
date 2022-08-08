@@ -24,11 +24,6 @@ export class PermissionEntityProperties{
     @IsAlpha()
     description: string
 
-    @Prop({
-        required: true,
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }]
-    })
-    roles: RoleEntity[]
 }
 
 export class PermissionEntity extends IntersectionType(

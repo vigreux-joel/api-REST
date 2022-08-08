@@ -14,11 +14,21 @@ import {InjectModel} from "@nestjs/mongoose";
 @Injectable()
 export class RoleService {
   constructor(@InjectModel('Role') private roleRepository, private readonly permissionRepository: PermissionRepository) {
-    permissionRepository.resetDefaultPermission()
+    // permissionRepository.resetDefaultPermission()
+    this.resetDefaultPermission()
   }
 
   async resetDefaultPermission() {
-    this.permissionRepository.deleteMany({ name: new RegExp(RoleHelper.prefixDefaultPermission) })
+    const roles = await this.roleRepository.find({default: true})
+    roles.forEach((role) => {
+      this.permissionRepository.deleteMany(
+          {
+            id: {
+              $in: role.permission
+            }
+          }
+      )
+    });
   }
 
   async registerDefaultPermission(name: string, description: string): Promise<PermissionEntity>{

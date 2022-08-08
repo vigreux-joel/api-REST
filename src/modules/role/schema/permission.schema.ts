@@ -27,12 +27,6 @@ class SchemaProperties implements PermissionEntityProperties{
         unique: true,
     })
     description: string
-
-    @Prop({
-        required: true,
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }]
-    })
-    roles: RoleEntity[]
 }
 
 export type PermissionDocument = SchemaProperties & Document

@@ -33,3 +33,7 @@ class SchemaProperties implements RoleProperties{
 
 export type RoleDocument = SchemaProperties & Document
 export const RoleSchema = SchemaFactory.createForClass(SchemaProperties);
+
+// RoleSchema.pre('save', function () {
+//     console.log(this.permissions[0])
+// });
