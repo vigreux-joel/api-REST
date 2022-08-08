@@ -10,7 +10,8 @@ import * as request from 'supertest';
 import {UserHelper} from "../user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
-import {UserEntity, UserSchema} from "../entities/user.entity";
+import {UserEntity} from "../entities/user.entity";
+import {UserSchema} from "../schema/user.schema";
 
 describe('UserController', () => {
   let userService: UserService;

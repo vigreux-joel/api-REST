@@ -1,5 +1,6 @@
 import {ApiProperty, ApiPropertyOptional, OmitType} from "@nestjs/swagger";
-import {UserEntity, UserInterface} from "../entities/user.entity";
+import {UserEntity} from "../entities/user.entity";
+import {UserInterface} from "../interfaces/user.interface";
 
 export class ReadUserDto implements UserInterface{
 

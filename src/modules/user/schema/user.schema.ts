@@ -1,6 +1,7 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Document} from "mongoose";
-import {UserEntity, UserInterface} from "../entities/user.entity";
+import {UserEntity} from "../entities/user.entity";
+import {UserInterface} from "../interfaces/user.interface";
 
 @Schema({
     toObject: {

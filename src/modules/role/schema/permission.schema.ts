@@ -4,8 +4,9 @@ import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import mongoose, {Document} from "mongoose";
-import {PermissionEntity, PermissionInterface} from "../entities/permission.entity";
+import {PermissionEntity} from "../entities/permission.entity";
 import {RoleEntity} from "../entities/role.entity";
+import {PermissionInterface} from "../interfaces/permission.interface";
 
 @Schema({
     toObject: {

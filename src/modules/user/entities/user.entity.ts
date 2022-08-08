@@ -1,15 +1,7 @@
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
-
-export interface UserInterface {
-    firstname: string;
-    lastname: string;
-    email: string;
-    avatar: string;
-    tel: string;
-    password: string;
-}
+import {UserInterface} from "../interfaces/user.interface";
 
 export class UserEntity extends AbstractEntity implements UserInterface{
 
