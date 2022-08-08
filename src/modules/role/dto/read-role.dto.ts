@@ -9,7 +9,6 @@ export class ReadRoleDto implements RoleInterface{
     @ApiProperty({ example: 'ROLE_ADMIN'})
     name: string
 
-
     @ApiProperty({ example: true})
     default: boolean
 
