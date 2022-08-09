@@ -43,7 +43,8 @@ class SchemaProperties implements UserInterface{
         minLength: 8,
     })
     password: string;
-        @Prop({
+
+    @Prop({
         required: true,
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: RoleHelper.modelName }]
     })

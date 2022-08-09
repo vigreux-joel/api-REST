@@ -32,13 +32,6 @@ export class RoleService {
     return await this.roleRepository.deleteMany({default: true})
   }
 
-  async registerDefaultPermission(name: string, description: string): Promise<PermissionEntity>{
-    let permission = new PermissionEntity()
-    permission.name = RoleHelper.prefixDefaultPermission+'.'+name
-    permission.description = description;
-    return this.permissionRepository.create(permission)
-  }
-
   async registerPermission(name: string, description: string): Promise<PermissionEntity>{
     let permission = new PermissionEntity()
     permission.name = name
@@ -51,7 +44,7 @@ export class RoleService {
     role.name = name
     role.permissions = permissions
     role.default = true
-    return  this.roleRepository.create(role);
+    return this.roleRepository.create(role);
   }
 
   // async create(createRoleDto: CreateRoleDto): Promise<RoleEntity> {

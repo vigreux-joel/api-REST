@@ -92,7 +92,7 @@ export class UserController {
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(ReadUserDto)
   async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
-    let userTest = await this.userService.findOne('62f10830059dfb86e5dde47b')
+    let userTest = await this.userService.findOne('62f14c5277a43af0c78a1751')
     console.log(userTest)
     return await this.userService.findAll(pageOptionsDto);
   }
