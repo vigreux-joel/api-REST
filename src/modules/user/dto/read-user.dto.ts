@@ -2,8 +2,12 @@ import {ApiProperty, ApiPropertyOptional, OmitType} from "@nestjs/swagger";
 import {UserEntity} from "../entities/user.entity";
 import {UserInterface} from "../interfaces/user.interface";
 import {RoleEntity} from "../../role/entities/role.entity";
+import {Exclude} from "class-transformer";
+import {ClassSerializerInterceptor, UseInterceptors} from "@nestjs/common";
+import {TransformInterceptor} from "../../../utils/api/transform.interceptor";
+import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 
-export class ReadUserDto implements UserInterface{
+export class ReadUserDto extends AbstractEntity implements UserInterface{
 
     @ApiProperty({ example: 'john'})
     firstname: string;
@@ -19,7 +23,7 @@ export class ReadUserDto implements UserInterface{
     @ApiPropertyOptional({ example: '+33100000000'})
     tel: string;
 
-    @ApiProperty({ example: 'passwordExample'})
+    @Exclude({ toPlainOnly: true })
     password: string;
 
     @ApiProperty({ type: RoleEntity})

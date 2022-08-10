@@ -3,6 +3,7 @@ import {Exclude} from "class-transformer";
 import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
+import {ReadUserDto} from "../dto/read-user.dto";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -31,6 +32,5 @@ export class UserEntity extends AbstractEntity implements UserInterface {
 
     @IsNotEmpty()
     @MinLength(8)
-    @Exclude({ toPlainOnly: true })
     password: string;
 }

@@ -4,15 +4,18 @@ import {UserEntity} from "../entities/user.entity";
 import {UserInterface} from "../interfaces/user.interface";
 import {RoleEntity} from "../../role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
+import {IntersectionType} from "@nestjs/swagger";
+import {ReadUserDto} from "../dto/read-user.dto";
 
 @Schema({
     toObject: {
         transform: function(doc, ret, options) {
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new UserEntity()));
+            //TODO type par fusion temporaire
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new (IntersectionType(ReadUserDto, UserEntity))()));
         }
     },
 })
-class SchemaProperties implements UserInterface{
+class SchemaProperties extends UserEntity implements UserInterface{
 
     @Prop({
         required: true,

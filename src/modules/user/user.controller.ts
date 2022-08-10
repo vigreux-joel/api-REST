@@ -23,6 +23,7 @@ import {TransformInterceptor} from "../../utils/api/transform.interceptor";
 import {RoleService} from "../role/role.service";
 import {ReadUserDto} from "./dto/read-user.dto";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
+import {UserEntity} from "./entities/user.entity";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -74,7 +75,7 @@ export class UserController {
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create '+UserHelper.entityName})
   @ApiResponse({status: 201, type: ReadUserDto})
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto): Promise<ReadUserDto> {
     try {
       return await this.userService.create(createUserDto);
     } catch (e) {
@@ -100,7 +101,7 @@ export class UserController {
   @Get(':id')
   @ApiOperation({summary: 'Get '+UserHelper.entityName+' by id'})
   @ApiEntityResponse(ReadUserDto)
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<ReadUserDto> {
     try {
       return await this.userService.findOne(id);
     } catch (e) {
