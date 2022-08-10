@@ -6,6 +6,7 @@ import {RoleEntity} from "../../role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
 import {IntersectionType} from "@nestjs/swagger";
 import {ReadUserDto} from "../dto/read-user.dto";
+import {AbstractEntity} from "../../../utils/api/AbstractEntity";
 
 @Schema({
     toObject: {
@@ -14,7 +15,7 @@ import {ReadUserDto} from "../dto/read-user.dto";
         }
     },
 })
-class SchemaProperties extends UserEntity implements UserInterface{
+class SchemaProperties extends AbstractEntity implements UserInterface{
 
     @Prop({
         required: true,
