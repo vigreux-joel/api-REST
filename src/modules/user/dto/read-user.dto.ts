@@ -23,7 +23,6 @@ export class ReadUserDto extends AbstractEntity implements UserInterface{
     @ApiPropertyOptional({ example: '+33100000000'})
     tel: string;
 
-    @Exclude({ toPlainOnly: true })
     password: string;
 
     @ApiProperty({ type: RoleEntity})

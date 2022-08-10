@@ -10,8 +10,7 @@ import {ReadUserDto} from "../dto/read-user.dto";
 @Schema({
     toObject: {
         transform: function(doc, ret, options) {
-            //TODO type par fusion temporaire
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new (IntersectionType(ReadUserDto, UserEntity))()));
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new UserEntity()));
         }
     },
 })

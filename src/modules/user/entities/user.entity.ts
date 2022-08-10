@@ -32,5 +32,6 @@ export class UserEntity extends AbstractEntity implements UserInterface {
 
     @IsNotEmpty()
     @MinLength(8)
+    @Exclude({ toPlainOnly: true })
     password: string;
 }
