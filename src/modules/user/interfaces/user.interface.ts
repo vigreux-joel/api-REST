@@ -8,5 +8,5 @@ export interface UserInterface extends AbstractEntity {
     avatar: string;
     tel: string;
     password: string;
-    roles: RoleEntity
+    roles: RoleEntity[]
 }

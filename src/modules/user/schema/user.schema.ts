@@ -51,7 +51,7 @@ class SchemaProperties extends AbstractEntity implements UserInterface{
         required: true,
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: RoleHelper.modelName }]
     })
-    roles: RoleEntity
+    roles: RoleEntity[]
 }
 
 export type UserDocument = SchemaProperties & Document;

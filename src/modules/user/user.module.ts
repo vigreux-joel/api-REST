@@ -5,7 +5,7 @@ import {UserRepository} from "./user.repository";
 import {UserHelper} from "./user.helper";
 import {DatabaseHelper} from "../database/database.helper";
 import {RoleModule} from "../role/role.module";
-import {UserSchema} from "./schema/user.schema";
+import {UserSchema} from "./schema/user.schema"
 
 @Module({
   imports: [

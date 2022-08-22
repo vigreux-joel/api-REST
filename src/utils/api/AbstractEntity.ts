@@ -1,7 +1,7 @@
 import {Prop} from "@nestjs/mongoose";
 import {ApiProperty} from "@nestjs/swagger";
 import {Exclude, Expose, Transform} from "class-transformer";
-import {IsMongoId} from "class-validator";
+import {IsDateString, IsMongoId} from "class-validator";
 
 export class AbstractEntity {
 
@@ -19,6 +19,7 @@ export class AbstractEntity {
     @Prop({
         type: Date,
     })
+    @IsDateString()
     @ApiProperty({ example: '2022-06-30T12:10:27.092Z'})
     public createdAt: Date;
 }

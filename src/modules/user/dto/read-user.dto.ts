@@ -25,6 +25,6 @@ export class ReadUserDto extends AbstractEntity implements UserInterface{
 
     password: string;
 
-    @ApiProperty({ type: RoleEntity})
-    roles: RoleEntity
+    @ApiProperty({ type: [RoleEntity]})
+    roles: RoleEntity[]
 }
