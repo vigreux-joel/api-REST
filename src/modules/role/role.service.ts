@@ -43,7 +43,8 @@ export class RoleService {
     let role = new RoleEntity()
     role.name = name
     role.permissions = permissions
-    role.default = true
+    role.default = lock
+    console.log('role');
     return this.roleRepository.create(role);
   }
 
