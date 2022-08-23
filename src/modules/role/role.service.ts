@@ -1,17 +1,6 @@
-import {Injectable, OnApplicationBootstrap, OnModuleInit} from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
+import {Injectable} from '@nestjs/common';
 import {RoleEntity} from "./entities/role.entity";
-import * as bcrypt from "bcrypt";
-import {RoleHelper} from "./role.helper";
-import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {RoleRepository} from "./repositories/role.repository";
-import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
-import {UserHelper} from "../user/user.helper";
-import {InjectModel} from "@nestjs/mongoose";
-import {RoleDocument} from "./schema/role.schema";
-import {PermissionDocument} from "./schema/permission.schema";
 import {RoleFactory} from "./role.factory";
 
 @Injectable()
