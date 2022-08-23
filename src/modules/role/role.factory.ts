@@ -13,6 +13,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {RoleDocument} from "./schema/role.schema";
 import {PermissionDocument} from "./schema/permission.schema";
 
+
 @Injectable()
 export class RoleFactory {
 
@@ -61,10 +62,11 @@ export class RoleFactory {
     }
 
     async registerRole(name: string, permissions: PermissionEntity[], lock:boolean = true): Promise<RoleEntity>{
+
         let role: RoleEntity = await this.roleRepository.findOne({name: name})
         if (role){
             role.permissions = permissions
-            role = await this.roleRepository.findOneAndUpdate(role.id, role)
+            role = await this.roleRepository.findOneAndUpdate({name: name}, role)
         }
         else {
             role = new RoleEntity()
