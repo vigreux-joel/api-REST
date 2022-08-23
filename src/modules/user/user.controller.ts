@@ -32,34 +32,8 @@ import {UserEntity} from "./entities/user.entity";
 export class UserController {
   constructor(private readonly userService: UserService, private readonly roleService: RoleService) {
     this.createRole()
-
   }
   async createRole(){
-    console.log('controller debut');
-
-    // let admin ={
-    //   default: true,
-    //   permissions: [
-    //     'user.*'
-    //   ]
-    // }
-    // let self ={
-    //   default: true,
-    //   permissions: [
-    //     'user.read.*',
-    //     'user.write.*',
-    //     'user.update.*',
-    //   ]
-    // }
-    // // let default ={
-    // //   name: 'default',
-    // //   default: true,
-    // //   permissions: [
-    // //     'user.read.firstname',
-    // //     'user.read.lastname',
-    // //   ]
-    // // }
-
     const userAdmin = await this.roleService.registerPermission('user.*', 'allows to manage all')
     const userReadAll = await this.roleService.registerPermission('user.read.*', 'allows to read all')
     const userWriteAll = await this.roleService.registerPermission('user.write.*', 'allows to write all')
@@ -67,12 +41,9 @@ export class UserController {
     const userReadFirstName = await this.roleService.registerPermission('user.read.firstname', 'allows to read the firstname')
     const userReadLastName = await this.roleService.registerPermission('user.read.lastname', 'allows to read the lastname')
 
-    this.roleService.registerRole('default', [userReadFirstName,userReadLastName])
-    this.roleService.registerRole('self', [userWriteAll,userReadAll,userUpdateAll])
-    this.roleService.registerRole('admin', [userAdmin])
-    console.log('controller fini');
-
-
+    await this.roleService.registerRole('default', [userReadFirstName,userReadLastName])
+    await this.roleService.registerRole('self', [userWriteAll,userReadAll,userUpdateAll])
+    await this.roleService.registerRole('admin', [userAdmin])
   }
 
   @Post()

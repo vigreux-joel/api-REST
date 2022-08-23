@@ -36,7 +36,6 @@ export class RoleService implements OnModuleInit {
   }
 
   async deleteUnusedPermission() {
-    console.log("deleted")
     const legacyPermission = await this.permissionRepository.find()
     for (let i = 0; i < legacyPermission.length; i++){
       if (!this.permissions.includes(legacyPermission[i].name)){
@@ -75,7 +74,6 @@ export class RoleService implements OnModuleInit {
       role = await this.roleRepository.create(role);
     }
     this.rolesDefault.push(role.name)
-    console.log("role ok")
     return role;
   }
 
