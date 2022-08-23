@@ -15,7 +15,7 @@ import {PermissionInterface} from "../interfaces/permission.interface";
         }
     },
 })
-class SchemaProperties implements PermissionInterface{
+class SchemaProperties extends AbstractEntity implements PermissionInterface{
 
     @Prop({
         required: true,

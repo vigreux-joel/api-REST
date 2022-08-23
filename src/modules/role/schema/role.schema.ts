@@ -14,7 +14,7 @@ import {RoleInterface} from "../interfaces/role.interface";
         }
     },
 })
-class SchemaProperties implements RoleInterface{
+class SchemaProperties extends AbstractEntity implements RoleInterface{
     @Prop({
         required: true,
         unique: true

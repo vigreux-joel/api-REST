@@ -32,8 +32,11 @@ import {UserEntity} from "./entities/user.entity";
 export class UserController {
   constructor(private readonly userService: UserService, private readonly roleService: RoleService) {
     this.createRole()
+
   }
   async createRole(){
+    console.log('controller debut');
+
     // let admin ={
     //   default: true,
     //   permissions: [
@@ -67,6 +70,7 @@ export class UserController {
     this.roleService.registerRole('default', [userReadFirstName,userReadLastName])
     this.roleService.registerRole('self', [userWriteAll,userReadAll,userUpdateAll])
     this.roleService.registerRole('admin', [userAdmin])
+    console.log('controller fini');
 
 
   }

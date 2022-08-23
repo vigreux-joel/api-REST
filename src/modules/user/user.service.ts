@@ -22,13 +22,12 @@ export class UserService {
   }
 
   async findAll(pageOptionsDto: PageOptionsDto) {
-    return this.userRepository.find(null, pageOptionsDto);
+    return this.userRepository.findPaginated(null, pageOptionsDto);
   }
 
   async findOne(filter: string|object): Promise<UserEntity> {
     let result: UserEntity
     result = await this.userRepository.findOne(filter);
-    console.log(result)
     if (!result){
       throw new Error('not found '+UserHelper.entityName);
     }

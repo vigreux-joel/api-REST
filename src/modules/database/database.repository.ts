@@ -3,11 +3,12 @@ import {DatabaseHelper as DB} from "./database.helper";
 import {PageDto} from "../../utils/api/dto/page.dto";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
+import {RoleEntity} from "../role/entities/role.entity";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
-  async create(createEntityData: unknown): Promise<any> {
+  async create(createEntityData: unknown): Promise<T> {
     const entity = new this.entityModel(createEntityData);
     return entity.save()
   }
@@ -20,6 +21,13 @@ export abstract class DatabaseRepository<T extends Document> {
   }
 
   async find(
+      entityFilterQuery?: FilterQuery<T>,
+  ): Promise<T[]> {
+    const findQuery = this.entityModel.find(entityFilterQuery)
+    return findQuery;
+  }
+
+  async findPaginated(
     entityFilterQuery?: FilterQuery<T>,
     pageOptionsDto?: PageOptionsDto
   ): Promise<PageDto<T>> {

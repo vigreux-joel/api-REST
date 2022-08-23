@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, OnApplicationBootstrap, OnModuleInit} from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import {RoleEntity} from "./entities/role.entity";
@@ -10,42 +10,73 @@ import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
 import {UserHelper} from "../user/user.helper";
 import {InjectModel} from "@nestjs/mongoose";
+import {RoleDocument} from "./schema/role.schema";
+import {PermissionDocument} from "./schema/permission.schema";
 
 @Injectable()
-export class RoleService {
-  constructor(@InjectModel('Role') private roleRepository, private readonly permissionRepository: PermissionRepository) {
-    // permissionRepository.resetDefaultPermission()
-    this.resetDefaultRole()
+export class RoleService implements OnModuleInit {
+
+  rolesDefault: string[] = []
+  permissions: string[] = []
+  constructor(@InjectModel('Role') private roleRepository: RoleRepository, private readonly permissionRepository: PermissionRepository) {}
+
+  onModuleInit(): any {
+    this.deleteUnusedRole()
+    this.deleteUnusedPermission()
   }
 
-  async resetDefaultRole() {
-    const roles = await this.roleRepository.find({default: true})
-    roles.forEach((role) => {
-      this.permissionRepository.deleteMany(
-          {
-            id: {
-              $in: role.permission
-            }
-          }
-      )
-    });
-    return await this.roleRepository.deleteMany({default: true})
+  async deleteUnusedRole() {
+    const legacyRoleDefault = await this.roleRepository.find({default: true})
+    for (let i = 0; i < legacyRoleDefault.length; i++){
+      if (!this.rolesDefault.includes(legacyRoleDefault[i].name)){
+        this.rolesDefault.splice(i, 1)
+        await this.roleRepository.findOneAndRemove({name: legacyRoleDefault[i].name})
+      }
+    }
+  }
+
+  async deleteUnusedPermission() {
+    console.log("deleted")
+    const legacyPermission = await this.permissionRepository.find()
+    for (let i = 0; i < legacyPermission.length; i++){
+      if (!this.permissions.includes(legacyPermission[i].name)){
+        this.permissions.splice(i, 1)
+        await this.permissionRepository.findOneAndRemove({name: legacyPermission[i].name})
+      }
+    }
   }
 
   async registerPermission(name: string, description: string): Promise<PermissionEntity>{
-    let permission = new PermissionEntity()
-    permission.name = name
-    permission.description = description
-    return this.permissionRepository.create(permission)
+    let permission: PermissionEntity = await this.permissionRepository.findOne({name: name})
+    if (permission) {
+      permission.description = description
+      permission = await this.permissionRepository.findOneAndUpdate(permission.id, permission)
+    } else {
+      permission = new PermissionEntity()
+      permission.name = name
+      permission.description = description
+      permission = await this.permissionRepository.create(permission);
+    }
+    this.permissions.push(permission.name)
+    return permission;
   }
 
-  async registerRole(name: string, permissions: PermissionEntity[], lock:boolean = true): Promise<PermissionEntity>{
-    let role = new RoleEntity()
-    role.name = name
-    role.permissions = permissions
-    role.default = lock
-    console.log('role');
-    return this.roleRepository.create(role);
+  async registerRole(name: string, permissions: PermissionEntity[], lock:boolean = true): Promise<RoleEntity>{
+    let role: RoleEntity = await this.roleRepository.findOne({name: name})
+    if (role){
+      role.permissions = permissions
+      role = await this.roleRepository.findOneAndUpdate(role.id, role)
+    }
+    else {
+      role = new RoleEntity()
+      role.name = name
+      role.permissions = permissions
+      role.default = lock
+      role = await this.roleRepository.create(role);
+    }
+    this.rolesDefault.push(role.name)
+    console.log("role ok")
+    return role;
   }
 
   // async create(createRoleDto: CreateRoleDto): Promise<RoleEntity> {
@@ -53,7 +84,7 @@ export class RoleService {
   // }
   //
   // async findAll(pageOptionsDto: PageOptionsDto) {
-  //   return this.roleRepository.find(null, pageOptionsDto);
+  //   return this.roleRepository.findPaginated(null, pageOptionsDto);
   // }
   //
   // async findOne(filter: string|object): Promise<RoleEntity> {
