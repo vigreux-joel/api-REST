@@ -6,6 +6,7 @@ import {UserHelper} from "./user.helper";
 import {DatabaseHelper} from "../database/database.helper";
 import {RoleModule} from "../role/role.module";
 import {UserSchema} from "./schema/user.schema"
+import {UserPermission} from "./user.permission";
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import {UserSchema} from "./schema/user.schema"
       RoleModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, UserPermission],
   exports: [UserService]
 })
 export class UserModule {
