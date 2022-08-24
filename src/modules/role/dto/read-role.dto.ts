@@ -12,5 +12,6 @@ export class ReadRoleDto implements RoleInterface{
     @ApiProperty({ example: true})
     default: boolean
 
-    permissions: Set<PermissionEntity>
+    permissions: PermissionEntity[]
+
 }

@@ -6,7 +6,7 @@ import {Reflector} from "@nestjs/core";
 
 export async function appOption(app: INestApplication) {
     app.useGlobalPipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: false, transform: true }));
-    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+    // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
     const config = new DocumentBuilder()
         .setTitle(process.env.SITE_NAME)

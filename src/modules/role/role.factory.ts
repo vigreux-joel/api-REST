@@ -43,20 +43,19 @@ export class RoleFactory {
 
     async registerRole(name: string, permissions: Set<PermissionEntity>, lock:boolean = true): Promise<RoleEntity>{
         let role: RoleEntity = await this.roleRepository.findOne({name: name})
-
         if (role){
             if(this.permissions.has(role.name)) {
                 return role
             }
-            role.permissions = permissions
+            role.permissions = Array.from(permissions)
             role = await this.roleRepository.findOneAndUpdate({name: name}, role)
         }
         else {
             role = new RoleEntity()
             role.name = name
-            role.permissions = permissions
+            role.permissions = Array.from(permissions)
             role.default = lock
-            role = await this.roleRepository.create(role);
+            role = await this.roleRepository.create(role)
         }
         this.rolesDefault.add(role.name)
         return role;

@@ -1,7 +1,6 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
-import {Exclude} from "class-transformer";
 import {IsAlpha, IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
 import mongoose, {Document} from "mongoose";
 import {PermissionEntity} from "../entities/permission.entity";
