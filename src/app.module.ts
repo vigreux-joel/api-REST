@@ -8,11 +8,11 @@ import {EventEmitterModule} from "@nestjs/event-emitter";
 
 @Module({
     imports: [
+        EventEmitterModule.forRoot(),
+        RoleModule,
         DatabaseModule,
         UserModule,
         AuthModule,
-        RoleModule,
-        EventEmitterModule.forRoot()
     ],
 })
 export class AppModule {}

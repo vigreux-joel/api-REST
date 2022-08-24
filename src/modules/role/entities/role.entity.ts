@@ -15,5 +15,5 @@ export class RoleEntity extends AbstractEntity implements RoleInterface{
     @ApiProperty({ example: true})
     default: boolean
 
-    permissions: PermissionEntity[]
+    permissions: Set<PermissionEntity>
 }

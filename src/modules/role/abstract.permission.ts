@@ -3,12 +3,13 @@ import {EventEmitter2} from "@nestjs/event-emitter";
 
 export abstract class AbstractPermission {
 
-    protected constructor(protected readonly roleService: RoleService, protected eventEmitter: EventEmitter2) {
-        this.eventEmitter.emit('role.register')
-        this.createPermission()
+    protected constructor(protected readonly roleService: RoleService) {
+        this.createRoles()
     }
 
-    createPermission(){
-        this.eventEmitter.emit('role.registered')
+    abstract createPermissions(): {category: string, roles: object}
+
+    createRoles(){
+        this.roleService.registerRoles(this.createPermissions())
     }
 }

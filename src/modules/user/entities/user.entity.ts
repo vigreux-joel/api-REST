@@ -9,15 +9,6 @@ import {PermissionEntity} from "../../role/entities/permission.entity";
 export class UserEntity extends AbstractEntity implements UserInterface {
 
     roles: RoleEntity[];
-    // get roles(): RoleEntity[]{
-    //     let test: RoleEntity = new RoleEntity()
-    //     const perm: PermissionEntity = new PermissionEntity()
-    //     perm.description = 'description test'
-    //     perm.name = 'testaussi'
-    //     test.permissions = [perm]
-    //     return [test]
-    // }
-
 
     @IsNotEmpty()
     @MinLength(3)

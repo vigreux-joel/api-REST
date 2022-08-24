@@ -7,11 +7,7 @@ import {RoleFactory} from "./role.factory";
 export class RoleService {
   constructor(private roleFactory: RoleFactory) {}
 
-  async registerPermission(name: string, description: string): Promise<PermissionEntity>{
-    return this.roleFactory.registerPermission(name, description)
-  }
-
-  async registerRole(name: string, permissions: PermissionEntity[], lock:boolean = true): Promise<RoleEntity>{
-    return this.roleFactory.registerRole(name, permissions)
+  registerRoles(roles: {category: string, roles: object}, lock: boolean = true): Promise<void>{
+    return this.roleFactory.registerRoles(roles, lock)
   }
 }

@@ -30,7 +30,7 @@ class SchemaProperties extends AbstractEntity implements RoleInterface{
         required: true,
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Permission' }]
     })
-    permissions: PermissionEntity[]
+    permissions: Set<PermissionEntity>
 }
 
 export type RoleDocument = SchemaProperties & Document

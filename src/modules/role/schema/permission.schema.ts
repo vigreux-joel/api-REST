@@ -28,6 +28,11 @@ class SchemaProperties extends AbstractEntity implements PermissionInterface{
         unique: true,
     })
     description: string
+
+    @Prop({
+        required: true,
+    })
+    category: string;
 }
 
 export type PermissionDocument = SchemaProperties & Document
