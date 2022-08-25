@@ -45,7 +45,6 @@ class SchemaProperties extends AbstractEntity implements UserInterface{
     password: string;
 
     @Prop({
-        required: true,
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: RoleHelper.modelName }]
     })
     roles: RoleEntity[]

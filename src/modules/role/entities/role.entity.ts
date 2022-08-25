@@ -14,9 +14,7 @@ export class RoleEntity extends AbstractEntity implements RoleInterface{
 
     @IsBoolean()
     @ApiProperty({ example: true})
-    @Exclude({toPlainOnly: true})
     default: boolean
 
-    @Exclude({toPlainOnly: true})
     permissions: PermissionEntity[]
 }

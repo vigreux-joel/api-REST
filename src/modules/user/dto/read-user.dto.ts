@@ -5,10 +5,10 @@ import {AbstractEntity} from "../../../utils/abstract.entity";
 
 export class ReadUserDto extends AbstractEntity implements UserInterface{
 
-    @ApiProperty({ example: 'john'})
+    @ApiProperty({ example: 'John'})
     firstname: string;
 
-    @ApiProperty({ example: 'snow'})
+    @ApiProperty({ example: 'Doe'})
     lastname: string;
 
     @ApiProperty({ example: 'example@hotmail.com'})
@@ -21,6 +21,6 @@ export class ReadUserDto extends AbstractEntity implements UserInterface{
 
     password: string;
 
-    @ApiPropertyOptional({ type: [RoleEntity]})
+    @ApiPropertyOptional({ example: ['default']})
     roles: RoleEntity[]
 }
