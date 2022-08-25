@@ -1,8 +1,6 @@
 import {Injectable} from "@nestjs/common";
-import {UserService} from "./user.service";
 import {RoleService} from "../role/role.service";
 import {AbstractPermission} from "../role/abstract.permission";
-import {EventEmitter2} from "@nestjs/event-emitter";
 import {UserHelper} from "./user.helper";
 
 @Injectable()

@@ -1,10 +1,8 @@
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
 import {Exclude} from "class-transformer";
 import {IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MaxLength, MinLength} from "class-validator";
 import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
-import {ReadUserDto} from "../dto/read-user.dto";
-import {PermissionEntity} from "../../role/entities/permission.entity";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -34,6 +32,6 @@ export class UserEntity extends AbstractEntity implements UserInterface {
 
     @IsNotEmpty()
     @MinLength(8)
-    @Exclude({ toPlainOnly: true })
+    @Exclude({toPlainOnly: true})
     password: string;
 }

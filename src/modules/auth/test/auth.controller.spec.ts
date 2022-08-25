@@ -14,7 +14,7 @@ import {userStub} from "../../user/test/stubs/user.stub";
 import {UserHelper} from "../../user/user.helper";
 import {DatabaseModule} from "../../database/database.module";
 import {DatabaseHelper} from "../../database/database.helper";
-import {UserSchema} from "../../user/entities/user.entity";
+import {UserSchema} from "../../user/schema/user.schema";
 
 describe('UserController', () => {
   let authService: AuthService

@@ -9,25 +9,21 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors, Req, ClassSerializerInterceptor, UseGuards
+  UseInterceptors, Req
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
 import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {TransformInterceptor} from "../../utils/api/transform.interceptor";
-import {RoleService} from "../role/role.service";
+import {TransformInterceptor} from "../../utils/transform.interceptor";
 import {ReadUserDto} from "./dto/read-user.dto";
-import {JwtAuthGuard} from "../auth/jwt-auth.guard";
-import {UserEntity} from "./entities/user.entity";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly userService: UserService) {

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import {FilterQuery, Model} from "mongoose";
+import {Model} from "mongoose";
 import {DatabaseRepository} from "../../database/database.repository";
 import {RoleHelper} from "../role.helper";
 import {PermissionDocument} from "../schema/permission.schema";

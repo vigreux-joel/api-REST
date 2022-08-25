@@ -1,17 +1,14 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
-import {ApiProperty} from "@nestjs/swagger";
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
-import {IsAlpha, IsBoolean, IsNotEmpty, MinLength} from "class-validator";
+import {AbstractEntity} from "../../../utils/abstract.entity";
 import mongoose, {Document} from "mongoose";
 import {PermissionEntity} from "../entities/permission.entity";
 import {RoleEntity} from "../entities/role.entity";
 import {RoleInterface} from "../interfaces/role.interface";
+import {SchemaTransform} from "../../../utils/schema.transform";
 
 @Schema({
     toObject: {
-        transform: function(doc, ret, options) {
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new RoleEntity()));
-        }
+        transform: SchemaTransform(RoleEntity),
     },
 })
 class SchemaProperties extends AbstractEntity implements RoleInterface{

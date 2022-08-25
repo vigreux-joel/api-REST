@@ -1,6 +1,4 @@
 import {Injectable} from '@nestjs/common';
-import {RoleEntity} from "./entities/role.entity";
-import {PermissionEntity} from "./entities/permission.entity";
 import {RoleFactory} from "./role.factory";
 
 @Injectable()

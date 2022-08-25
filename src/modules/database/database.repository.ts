@@ -3,46 +3,69 @@ import {DatabaseHelper as DB} from "./database.helper";
 import {PageDto} from "../../utils/api/dto/page.dto";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
-import {RoleEntity} from "../role/entities/role.entity";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
-  async create(createEntityData: unknown): Promise<T> {
+  async create(createEntityData: object,
+               callback?: Function,
+               ): Promise<T> {
+    createEntityData = {
+      ...createEntityData,
+      createdAt: new Date()
+    }
     const entity = new this.entityModel(createEntityData);
-    return entity.save()
+    let query = entity.save()
+    if(callback){
+      query = callback(query)
+    }
+    return query
   }
 
 
   async findOne(
     filterQuery: string|object,
+    callback?: Function,
   ): Promise<T> {
-    return this.entityModel.findOne(DB.searchOne(filterQuery))
+    let query = this.entityModel.findOne(DB.searchOne(filterQuery))
+    if(callback){
+      query = callback(query)
+    }
+    return query
   }
 
   async find(
       entityFilterQuery?: FilterQuery<T>,
+      callback?: Function,
   ): Promise<T[]> {
-    const findQuery = this.entityModel.find(entityFilterQuery)
-    return findQuery;
+    let query = this.entityModel.find(entityFilterQuery)
+    if(callback){
+      query = callback(query)
+    }
+    return query
   }
 
   async findPaginated(
     entityFilterQuery?: FilterQuery<T>,
-    pageOptionsDto?: PageOptionsDto
+    pageOptionsDto?: PageOptionsDto,
+    callback?: Function,
   ): Promise<PageDto<T>> {
-    const findQuery = this.entityModel.find(entityFilterQuery)
+    let query = this.entityModel.find(entityFilterQuery)
         .sort({
           createdAt: -1
         })
         .skip(pageOptionsDto.skip)
     if (pageOptionsDto.limit) {
-      findQuery.limit(pageOptionsDto.limit);
+      query.limit(pageOptionsDto.limit);
     }
+    if(callback){
+      query = callback(query)
+    }
+
 
     const totalItems = await this.entityModel.count();
 
-    const results = await findQuery;
+    const results = await query;
     const pageMetaDto = new PageMetaDto({pageOptionsDto, totalItems });
 
     return new PageDto(results, pageMetaDto);
@@ -50,20 +73,36 @@ export abstract class DatabaseRepository<T extends Document> {
 
   async findOneAndUpdate(
     filterQuery: string|object,
-    updateEntityData: UpdateQuery<unknown>
+    updateEntityData: UpdateQuery<unknown>,
+    callback?: Function,
   ): Promise<T> {
-    return  this.entityModel.findOneAndUpdate(
+    let query = this.entityModel.findOneAndUpdate(
         DB.searchOne(filterQuery),
         updateEntityData
     )
+    if(callback){
+      query = callback(query)
+    }
+    return query
   }
 
-  async findOneAndRemove(filterQuery: string|object): Promise<T> {
-    return  this.entityModel.findOneAndRemove(DB.searchOne(filterQuery))
+  async findOneAndRemove(filterQuery: string|object,
+                         callback?: Function,
+                         ): Promise<T> {
+    let query = this.entityModel.findOneAndRemove(DB.searchOne(filterQuery))
+    if(callback){
+      query = callback(query)
+    }
+    return query
   }
 
-  async deleteMany(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
-    const deleteResult = await this.entityModel.deleteMany(entityFilterQuery);
-    return deleteResult.deletedCount >= 1;
+  async deleteMany(entityFilterQuery: FilterQuery<T>,
+                   callback?: Function,
+                   ): Promise<boolean> {
+    let query = await this.entityModel.deleteMany(entityFilterQuery);
+    if(callback){
+      query = callback(query)
+    }
+    return query.deletedCount >= 1;
   }
 }

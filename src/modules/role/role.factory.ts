@@ -4,7 +4,6 @@ import {RoleRepository} from "./repositories/role.repository";
 import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
 import {InjectModel} from "@nestjs/mongoose";
-import {OnEvent} from "@nestjs/event-emitter";
 
 
 @Injectable()
@@ -55,6 +54,7 @@ export class RoleFactory {
             role.name = name
             role.permissions = Array.from(permissions)
             role.default = lock
+            role.createdAt = new Date()
             role = await this.roleRepository.create(role)
         }
         this.rolesDefault.add(role.name)

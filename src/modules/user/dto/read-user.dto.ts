@@ -1,11 +1,7 @@
-import {ApiProperty, ApiPropertyOptional, OmitType} from "@nestjs/swagger";
-import {UserEntity} from "../entities/user.entity";
+import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
 import {UserInterface} from "../interfaces/user.interface";
 import {RoleEntity} from "../../role/entities/role.entity";
-import {Exclude} from "class-transformer";
-import {ClassSerializerInterceptor, UseInterceptors} from "@nestjs/common";
-import {TransformInterceptor} from "../../../utils/api/transform.interceptor";
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
 
 export class ReadUserDto extends AbstractEntity implements UserInterface{
 
@@ -25,6 +21,6 @@ export class ReadUserDto extends AbstractEntity implements UserInterface{
 
     password: string;
 
-    @ApiProperty({ type: [RoleEntity]})
+    @ApiPropertyOptional({ type: [RoleEntity]})
     roles: RoleEntity[]
 }

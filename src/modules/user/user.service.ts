@@ -6,7 +6,6 @@ import * as bcrypt from "bcrypt";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {UserRepository} from "./user.repository";
-import {ReadUserDto} from "./dto/read-user.dto";
 
 @Injectable()
 export class UserService {
@@ -14,20 +13,16 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     createUserDto.password = await this.hashPassword(createUserDto.password)
-
-    return this.userRepository.create({
-      ...createUserDto,
-      createdAt: new Date()
-    });
+    return this.userRepository.create(createUserDto);
   }
 
   async findAll(pageOptionsDto: PageOptionsDto) {
-    return this.userRepository.findPaginated(null, pageOptionsDto);
+    return this.userRepository.findPaginated(null,pageOptionsDto,(query) => query.populate('roles'))
   }
 
   async findOne(filter: string|object): Promise<UserEntity> {
     let result: UserEntity
-    result = await this.userRepository.findOne(filter);
+    result = await this.userRepository.findOne(filter,(query) => query.populate('roles'))
     if (!result){
       throw new Error('not found '+UserHelper.entityName);
     }
@@ -39,7 +34,7 @@ export class UserService {
       updateUserDto.password = await this.hashPassword(updateUserDto.password)
 
     let result
-    result = await this.userRepository.findOneAndUpdate(filter, updateUserDto);
+    result = await this.userRepository.findOneAndUpdate(filter, updateUserDto,(query) => query.populate('roles'));
     if (!result) {
       throw new Error('not found '+UserHelper.entityName)
     }
@@ -49,7 +44,7 @@ export class UserService {
   async remove(filter: string|object): Promise<null|UserEntity> {
     let result
     try {
-      result = await this.userRepository.findOneAndRemove(filter);
+      result = await this.userRepository.findOneAndRemove(filter,(query) => query.populate('roles'));
     } catch (e) {
       throw new Error('not found '+UserHelper.entityName)
     }

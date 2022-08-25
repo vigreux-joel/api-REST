@@ -1,5 +1,4 @@
 import {RoleService} from "./role.service";
-import {EventEmitter2} from "@nestjs/event-emitter";
 
 export abstract class AbstractPermission {
 

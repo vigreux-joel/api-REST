@@ -1,4 +1,4 @@
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
 import {IsAlpha, IsNotEmpty} from "class-validator";
 import {PermissionInterface} from "../interfaces/permission.interface";
 

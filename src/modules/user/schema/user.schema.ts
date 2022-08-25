@@ -4,15 +4,12 @@ import {UserEntity} from "../entities/user.entity";
 import {UserInterface} from "../interfaces/user.interface";
 import {RoleEntity} from "../../role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
-import {IntersectionType} from "@nestjs/swagger";
-import {ReadUserDto} from "../dto/read-user.dto";
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
+import {SchemaTransform} from "../../../utils/schema.transform";
 
 @Schema({
     toObject: {
-        transform: function(doc, ret, options) {
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new UserEntity()));
-        }
+        transform: SchemaTransform(UserEntity),
     },
 })
 class SchemaProperties extends AbstractEntity implements UserInterface{
