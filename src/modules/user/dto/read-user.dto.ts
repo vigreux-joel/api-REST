@@ -18,6 +18,7 @@ export class ReadUserDto extends AbstractEntity implements UserInterface{
     @ApiProperty({ example: 'example@hotmail.com'})
     email: string;
 
+    @ApiPropertyOptional({type: 'file'})
     avatar: string;
 
     @ApiPropertyOptional({ example: '+33100000000'})

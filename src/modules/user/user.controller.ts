@@ -9,11 +9,18 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors, Req, ClassSerializerInterceptor, UseGuards
+  UseInterceptors,
+  Req,
+  ClassSerializerInterceptor,
+  UseGuards,
+  UploadedFiles,
+  UploadedFile,
+  PipeTransform,
+  ArgumentMetadata, ParseUUIDPipe, ParseBoolPipe, ParseArrayPipe
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
@@ -24,6 +31,8 @@ import {RoleService} from "../role/role.service";
 import {ReadUserDto} from "./dto/read-user.dto";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {UserEntity} from "./entities/user.entity";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {diskStorage} from "multer";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -34,10 +43,36 @@ export class UserController {
   }
 
   @Post()
+  @UseInterceptors(FileInterceptor('avatar', {
+    storage: diskStorage({
+      destination: './uploadedFiles/avatars'
+    }),
+    fileFilter: (req, file, callback) =>{
+      if (!file.originalname.match(/\.(jpg|jpeg|png)$/i)){
+        return callback(new Error("Only image file are allowed"), false)
+      }
+      callback(null,true)
+    }
+  }))
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create '+UserHelper.entityName})
   @ApiResponse({status: 201, type: ReadUserDto})
-  async create(@Body() createUserDto: CreateUserDto): Promise<ReadUserDto> {
+  @ApiConsumes('multipart/form-data')
+  async create(
+      @Body() createUserDto: CreateUserDto,
+      @UploadedFile(
+          // new ParseFilePipeBuilder()
+          //     .addFileTypeValidator({
+          //       fileType: /(jpg|jpeg|png)$/,
+          //     })
+          //     .addMaxSizeValidator({
+          //       maxSize: 1000
+          //     })
+          //     .build({
+          //       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+          //     }),
+      ) file: Express.Multer.File): Promise<ReadUserDto> {
+    console.log(file)
     try {
       return await this.userService.create(createUserDto);
     } catch (e) {

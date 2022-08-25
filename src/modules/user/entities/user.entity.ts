@@ -26,6 +26,7 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @IsEmail()
     email: string;
 
+    @IsOptional()
     avatar: string;
 
     @IsPhoneNumber()

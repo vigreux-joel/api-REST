@@ -7,11 +7,13 @@ import {DatabaseHelper} from "../database/database.helper";
 import {RoleModule} from "../role/role.module";
 import {UserSchema} from "./schema/user.schema"
 import {UserPermission} from "./user.permission";
+import {MulterModule} from "@nestjs/platform-express";
 
 @Module({
   imports: [
       DatabaseHelper.modelRegister(UserHelper.modelName, UserSchema),
       RoleModule,
+      MulterModule
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, UserPermission],
