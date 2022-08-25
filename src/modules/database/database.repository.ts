@@ -8,7 +8,6 @@ export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}
 
   async create(createEntityData: object,
-               callback?: Function,
                ): Promise<T> {
     createEntityData = {
       ...createEntityData,
@@ -16,9 +15,6 @@ export abstract class DatabaseRepository<T extends Document> {
     }
     const entity = new this.entityModel(createEntityData);
     let query = entity.save()
-    if(callback){
-      query = callback(query)
-    }
     return query
   }
 
