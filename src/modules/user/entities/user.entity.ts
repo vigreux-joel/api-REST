@@ -13,14 +13,21 @@ import {
 } from "class-validator";
 import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
+import {RoleHelper} from "../../role/role.helper";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
+    @Transform(({ value }) => {
+        if(!value.includes(RoleHelper.defaultRole)){
+            value.push(RoleHelper.defaultRole)
+        }
+        return value
+    })
     @Transform(({ value }) => value.map(role => (role.name)?role.name:role),{ toPlainOnly: true })
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => RoleEntity)
-    roles: RoleEntity[];
+    roles: RoleEntity[] = [RoleHelper.defaultRole]
 
     @IsNotEmpty()
     @MinLength(3)

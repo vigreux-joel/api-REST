@@ -14,8 +14,7 @@ export abstract class DatabaseRepository<T extends Document> {
       createdAt: new Date()
     }
     const entity = new this.entityModel(createEntityData);
-    let query = entity.save()
-    return query
+    return entity.save()
   }
 
 

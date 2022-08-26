@@ -3,7 +3,6 @@ import 'dotenv/config';
 import {ClassSerializerInterceptor, INestApplication, ValidationPipe} from "@nestjs/common";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import {Reflector} from "@nestjs/core";
-import {TransformInterceptor} from "./utils/transform.interceptor";
 
 export async function appOption(app: INestApplication) {
     app.useGlobalPipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true, transform: true }));

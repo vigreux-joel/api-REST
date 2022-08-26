@@ -4,6 +4,7 @@ import {RoleRepository} from "./repositories/role.repository";
 import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
 import {InjectModel} from "@nestjs/mongoose";
+import {RoleHelper} from "./role.helper";
 
 
 @Injectable()
@@ -82,9 +83,11 @@ export class RoleFactory {
         return permission;
     }
 
-    private deleteUnused(){
-        this.deleteUnusedRole()
-        this.deleteUnusedPermission()
+    private async deleteUnused() {
+        await this.deleteUnusedRole()
+        await this.deleteUnusedPermission()
+
+        RoleHelper.defaultRole = await this.roleRepository.findOne({name: RoleHelper.defaultRoleName})
     }
 
     private async deleteUnusedRole() {

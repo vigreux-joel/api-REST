@@ -1,3 +1,5 @@
+import {RoleEntity} from "./entities/role.entity";
+
 export class RoleHelper {
 
     static moduleName: string = 'role'
@@ -6,5 +8,6 @@ export class RoleHelper {
 
     static modelName: string = this.moduleName.ucfirst()
 
-    static prefixDefaultPermission: string = 'app'
+    static defaultRoleName: string = 'default'
+    static defaultRole: RoleEntity
 }

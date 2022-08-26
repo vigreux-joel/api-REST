@@ -9,11 +9,11 @@ import {
   HttpException,
   HttpStatus,
   Query,
-  UseInterceptors, Req
+  UseInterceptors, Req, UseGuards
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
@@ -21,6 +21,7 @@ import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.resp
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {TransformInterceptor} from "../../utils/transform.interceptor";
 import {ReadUserDto} from "./dto/read-user.dto";
+import {JwtAuthGuardOptional} from "../auth/guards/jwt-auth.guard";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -46,11 +47,13 @@ export class UserController {
   }
 
   @Get()
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuardOptional)
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(ReadUserDto)
   async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
+
+    // console.log('trsrtgt',req.user)
 
     // let userTest: UserEntity = await this.userService.findOne('6304f56fc31bf25db08e55d1')
     // console.log(userTest)
