@@ -1,11 +1,12 @@
 import {RoleEntity} from "../../role/entities/role.entity";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {LocalFile} from "../../localFile/entities/localFile.entity";
 
 export interface UserInterface extends AbstractEntity {
     firstname: string;
     lastname: string;
     email: string;
-    avatar: string;
+    avatar: LocalFile;
     tel: string;
     password: string;
     roles: RoleEntity[]

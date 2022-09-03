@@ -7,6 +7,7 @@ import {RoleHelper} from "../../role/role.helper";
 import {IntersectionType} from "@nestjs/swagger";
 import {ReadUserDto} from "../dto/read-user.dto";
 import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {LocalFile} from "../../localFile/entities/localFile.entity";
 
 @Schema({
     toObject: {
@@ -35,7 +36,7 @@ class SchemaProperties extends AbstractEntity implements UserInterface{
 
     @Prop({
     })
-    avatar: string;
+    avatar: LocalFile;
 
     @Prop({
     })

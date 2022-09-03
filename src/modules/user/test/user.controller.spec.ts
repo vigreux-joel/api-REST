@@ -1,6 +1,6 @@
 import {appOption} from "../../../start";
 import {Test, TestingModule} from "@nestjs/testing"
-import { UserService } from "../user.Service"
+import { UserService } from "../user.service"
 import { userStub } from "./stubs/user.stub"
 import {CreateUserDto} from "../dto/create-user.dto";
 import {UserRepository} from "../user.repository";
@@ -62,7 +62,6 @@ describe('UserController', () => {
         ...payload,
         id: user.id,
         createdAt: user.createdAt,
-        avatar: undefined,
         password: undefined
       });
     })

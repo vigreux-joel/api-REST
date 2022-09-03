@@ -33,6 +33,7 @@ import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {UserEntity} from "./entities/user.entity";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
+import {createStore} from "adminjs";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -48,8 +49,11 @@ export class UserController {
       destination: './uploadedFiles/avatars'
     }),
     fileFilter: (req, file, callback) =>{
-      if (!file.originalname.match(/\.(jpg|jpeg|png)$/i)){
+      if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)){
         return callback(new Error("Only image file are allowed"), false)
+      }
+      if (file.size > 512) {
+        return callback(new Error("file is to big"), false)
       }
       callback(null,true)
     }
@@ -57,23 +61,12 @@ export class UserController {
   @ApiTags('Auth')
   @ApiOperation({summary: 'Create '+UserHelper.entityName})
   @ApiResponse({status: 201, type: ReadUserDto})
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes('application/json', "multipart/form-data")
   async create(
       @Body() createUserDto: CreateUserDto,
-      @UploadedFile(
-          // new ParseFilePipeBuilder()
-          //     .addFileTypeValidator({
-          //       fileType: /(jpg|jpeg|png)$/,
-          //     })
-          //     .addMaxSizeValidator({
-          //       maxSize: 1000
-          //     })
-          //     .build({
-          //       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-          //     }),
-      ) file: Express.Multer.File): Promise<ReadUserDto> {
-    console.log(file)
+      @UploadedFile() file: Express.Multer.File): Promise<ReadUserDto> {
     try {
+      // createUserDto.avatar = { path: "/avatars", mimetype: file.mimetype, filename: file.originalname }
       return await this.userService.create(createUserDto);
     } catch (e) {
       throw new HttpException({

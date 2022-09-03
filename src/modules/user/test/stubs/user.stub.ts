@@ -4,7 +4,7 @@ export const userStub = (): UserEntity => {
  return {
      roles: undefined,
      id: 'fakeId',
-     avatar: "",
+     avatar: undefined,
      createdAt: null,
      firstname: "john",
      lastname: "snow",

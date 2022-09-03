@@ -62,6 +62,7 @@ describe('RoleController', () => {
         id: role.id,
         createdAt: role.createdAt,
         avatar: undefined,
+        mimetype: undefined,
         password: undefined
       });
     })

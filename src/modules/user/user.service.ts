@@ -7,6 +7,7 @@ import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {UserRepository} from "./user.repository";
 import {ReadUserDto} from "./dto/read-user.dto";
+import multer from "multer";
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,8 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     createUserDto.password = await this.hashPassword(createUserDto.password)
-
+    // createUserDto.mimetype = file.mimetype
+    // createUserDto.avatar = file.originalname
     return this.userRepository.create({
       ...createUserDto,
       createdAt: new Date()
@@ -60,4 +62,5 @@ export class UserService {
     const salt = await bcrypt.genSalt(saltRounds);
     return await bcrypt.hash(password, salt);
   }
+
 }

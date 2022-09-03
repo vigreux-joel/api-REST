@@ -5,6 +5,8 @@ import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
 import {ReadUserDto} from "../dto/read-user.dto";
 import {PermissionEntity} from "../../role/entities/permission.entity";
+import {LocalFile} from "../../localFile/entities/localFile.entity";
+
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -26,8 +28,7 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @IsEmail()
     email: string;
 
-    @IsOptional()
-    avatar: string;
+    avatar: LocalFile;
 
     @IsPhoneNumber()
     @IsOptional()
