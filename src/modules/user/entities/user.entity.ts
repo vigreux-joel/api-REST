@@ -18,7 +18,16 @@ import {RoleHelper} from "../../role/role.helper";
 export class UserEntity extends AbstractEntity implements UserInterface {
 
     @Transform(({ value }) => {
-        if(!value.includes(RoleHelper.defaultRole)){
+        let contain: boolean
+        for(let role of value) {
+            console.log(role._id, RoleHelper.defaultRole.id)
+            if(role._id == RoleHelper.defaultRole.id){
+                contain = true
+                break;
+            }
+        }
+
+        if(!contain){
             value.push(RoleHelper.defaultRole)
         }
         return value
