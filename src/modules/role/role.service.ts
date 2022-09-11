@@ -1,6 +1,5 @@
 import {Injectable} from '@nestjs/common';
 import {RegisterRoles} from "./abstract.permission";
-import {RoleRepository} from "./repositories/role.repository";
 import {RoleRegister} from "./role.register";
 
 @Injectable()

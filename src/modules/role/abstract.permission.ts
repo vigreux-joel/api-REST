@@ -1,5 +1,4 @@
 import {RoleService} from "./role.service";
-import {RoleEntity} from "./entities/role.entity";
 
 export type RegisterRoles = {
     name: string,

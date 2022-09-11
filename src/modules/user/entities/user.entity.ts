@@ -20,7 +20,6 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @Transform(({ value }) => {
         let contain: boolean
         for(let role of value) {
-            console.log(role._id, RoleHelper.defaultRole.id)
             if(role._id == RoleHelper.defaultRole.id){
                 contain = true
                 break;

@@ -2,7 +2,6 @@ import {Injectable} from "@nestjs/common";
 import {RoleService} from "../role/role.service";
 import {AbstractPermission} from "../role/abstract.permission";
 import {UserHelper} from "./user.helper";
-import {RoleEntity} from "../role/entities/role.entity";
 
 @Injectable()
 export class UserPermission extends AbstractPermission{

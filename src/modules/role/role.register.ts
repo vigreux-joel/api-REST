@@ -3,7 +3,6 @@ import {RoleEntity} from "./entities/role.entity";
 import {RoleRepository} from "./repositories/role.repository";
 import {PermissionRepository} from "./repositories/permission.repository";
 import {PermissionEntity} from "./entities/permission.entity";
-import {InjectModel} from "@nestjs/mongoose";
 import {RoleHelper} from "./role.helper";
 import {RegisterRoles} from "./abstract.permission";
 
