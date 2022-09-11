@@ -21,6 +21,11 @@ class SchemaProperties extends AbstractEntity implements RoleInterface{
     @Prop({
         required: true,
     })
+    category: string;
+
+    @Prop({
+        required: true,
+    })
     default: boolean;
 
     @Prop({

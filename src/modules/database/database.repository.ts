@@ -11,7 +11,8 @@ export abstract class DatabaseRepository<T extends Document> {
                ): Promise<T> {
     createEntityData = {
       ...createEntityData,
-      createdAt: new Date()
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
     const entity = new this.entityModel(createEntityData);
     return entity.save()
@@ -71,10 +72,14 @@ export abstract class DatabaseRepository<T extends Document> {
     updateEntityData: UpdateQuery<unknown>,
     callback?: Function,
   ): Promise<T> {
+    updateEntityData.updatedAt = new Date()
+
     let query = this.entityModel.findOneAndUpdate(
         DB.searchOne(filterQuery),
         updateEntityData
     )
+
+
     if(callback){
       query = callback(query)
     }

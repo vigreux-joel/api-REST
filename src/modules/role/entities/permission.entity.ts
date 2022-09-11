@@ -11,7 +11,4 @@ export class PermissionEntity extends AbstractEntity implements PermissionInterf
     @IsAlpha()
     description: string
 
-    @IsNotEmpty()
-    @IsAlpha()
-    category: string;
 }

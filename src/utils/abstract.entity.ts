@@ -23,4 +23,12 @@ export class AbstractEntity {
     @IsDateString()
     @ApiProperty({ example: '2022-06-30T12:10:27.092Z'})
     public createdAt: Date;
+
+    @Prop({
+        type: Date,
+        required: true,
+    })
+    @IsDateString()
+    @ApiProperty({ example: '2022-06-31T13:11:24.092Z'})
+    public updatedAt: Date;
 }

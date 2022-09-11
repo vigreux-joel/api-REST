@@ -12,4 +12,7 @@ export class ReadRoleDto implements RoleInterface{
 
     permissions: PermissionEntity[]
 
+    @ApiProperty({ example: 'user'})
+    category: string;
+
 }

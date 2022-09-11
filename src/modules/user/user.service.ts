@@ -5,7 +5,7 @@ import {UserEntity} from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import {UserHelper} from "./user.helper";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {UserRepository} from "./user.repository";
+import {UserRepository} from "./repositories/user.repository";
 
 @Injectable()
 export class UserService {

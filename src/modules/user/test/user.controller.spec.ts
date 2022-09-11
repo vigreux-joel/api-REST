@@ -3,7 +3,7 @@ import {Test, TestingModule} from "@nestjs/testing"
 import { UserService } from "../user.Service"
 import { userStub } from "./stubs/user.stub"
 import {CreateUserDto} from "../dto/create-user.dto";
-import {UserRepository} from "../user.repository";
+import {UserRepository} from "../repositories/user.repository";
 import {INestApplication} from "@nestjs/common";
 import {UserController} from "../user.controller";
 import * as request from 'supertest';
