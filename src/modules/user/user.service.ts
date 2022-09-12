@@ -13,7 +13,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     createUserDto.password = await this.hashPassword(createUserDto.password)
-    return this.userRepository.create(createUserDto);
+    return this.userRepository.create(createUserDto, (query) => query.populate('roles'));
   }
 
   async findAll(pageOptionsDto: PageOptionsDto) {

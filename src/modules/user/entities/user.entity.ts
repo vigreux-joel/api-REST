@@ -20,12 +20,11 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @Transform(({ value }) => {
         let contain: boolean
         for(let role of value) {
-            if(role._id == RoleHelper.defaultRole.id){
+            if(role._id == RoleHelper.defaultRole.id/* || role == RoleHelper.defaultRole.id */){
                 contain = true
                 break;
             }
         }
-
         if(!contain){
             value.push(RoleHelper.defaultRole)
         }
