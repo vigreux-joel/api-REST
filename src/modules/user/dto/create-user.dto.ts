@@ -4,8 +4,9 @@ import {UserEntity} from "../entities/user.entity";
 import {RoleEntity} from "../../role/entities/role.entity";
 import {Transform} from "class-transformer";
 import * as mongoose from "mongoose";
+import {getAbstractEntityProperties} from "../../../utils/abstract.entity";
 
-export class CreateUserDto extends OmitType(IntersectionType(ReadUserDto, UserEntity), ['id', 'createdAt', '_id']) {
+export class CreateUserDto extends OmitType(IntersectionType(ReadUserDto, UserEntity), [...getAbstractEntityProperties()]) {
 
     @ApiProperty({ example: 'passwordExample'})
     password: string
@@ -17,7 +18,7 @@ export class CreateUserDto extends OmitType(IntersectionType(ReadUserDto, UserEn
             return null
         }
     }),{toClassOnly: true})
-    @ApiPropertyOptional({ example: ['72dfe827795fddb48be5e3eb']})
+    @ApiProperty({ example: ['72dfe827795fddb48be5e3eb']})
     roles: RoleEntity[]
 
 }

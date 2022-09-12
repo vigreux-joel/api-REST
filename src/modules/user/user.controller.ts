@@ -22,6 +22,7 @@ import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {TransformInterceptor} from "../../utils/transform.interceptor";
 import {ReadUserDto} from "./dto/read-user.dto";
 import {JwtAuthGuardOptional} from "../auth/guards/jwt-auth.guard";
+import {AbstractEntity} from "../../utils/abstract.entity";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
