@@ -1,8 +1,5 @@
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
-import {UserInterface} from "../../user/interfaces/user.interface";
+import {AbstractEntity} from "../../../utils/abstract.entity"
 import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
-import {LocalFile} from "../entities/localFile.entity";
-import {RoleEntity} from "../../role/entities/role.entity";
 import {LocalFileInterface} from "../interfaces/localFile.interface";
 
 export class LocalFileDto extends AbstractEntity implements LocalFileInterface{

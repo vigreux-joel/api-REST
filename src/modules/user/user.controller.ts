@@ -20,7 +20,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiProperty, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserHelper} from "./user.helper";
 import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
@@ -32,7 +32,7 @@ import {JwtAuthGuardOptional} from "../auth/guards/jwt-auth.guard";
 import {AbstractEntity} from "../../utils/abstract.entity";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
-import {createStore} from "adminjs";
+import { create } from 'domain';
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
@@ -42,6 +42,28 @@ export class UserController {
   }
 
   @Post()
+  // @ApiBody({
+  //   schema: {
+  //     type: 'object',
+  //     properties: {
+  //       firstname: { type: 'string' },
+  //       lastname: { type: 'string' },
+  //       email: { type: 'string' },
+  //       file: {
+  //         type: 'string',
+  //         format: 'binary',
+  //       },
+  //       tel: { type: 'string' },
+  //       password: { type: 'string' },
+  //       roles: {
+  //         type: 'array',
+  //         items: {
+  //           type:'string',
+  //         },
+  //       },
+  //     },
+  //   },
+  // })
   @UseInterceptors(FileInterceptor('avatar', {
     storage: diskStorage({
       destination: './uploadedFiles/avatars'
@@ -63,10 +85,12 @@ export class UserController {
   async create(
       @Body() createUserDto: CreateUserDto,
       @UploadedFile() file: Express.Multer.File): Promise<ReadUserDto> {
+    console.log(createUserDto)
     try {
       // createUserDto.avatar = { path: "/avatars", mimetype: file.mimetype, filename: file.originalname }
       return await this.userService.create(createUserDto);
     } catch (e) {
+
       throw new HttpException({
         error: e.message,
         code: e.code,

@@ -1,9 +1,9 @@
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
 import {IsOptional} from "class-validator";
 import {LocalFileInterface} from "../interfaces/localFile.interface";
 import {ApiProperty} from "@nestjs/swagger";
 
-export class LocalFile extends AbstractEntity implements LocalFileInterface {
+export class LocalFileEntity extends AbstractEntity implements LocalFileInterface {
 
     @ApiProperty({example: "azertyuiopmlkjhgfdsqwxcvbn"})
     filename: string;

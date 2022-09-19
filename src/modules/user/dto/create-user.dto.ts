@@ -5,6 +5,8 @@ import {RoleEntity} from "../../role/entities/role.entity";
 import {Transform} from "class-transformer";
 import * as mongoose from "mongoose";
 import {getAbstractEntityProperties} from "../../../utils/abstract.entity";
+import { type } from "os";
+import {IsArray} from "class-validator";
 
 export class CreateUserDto extends OmitType(IntersectionType(ReadUserDto, UserEntity), [...getAbstractEntityProperties()]) {
 
@@ -20,6 +22,5 @@ export class CreateUserDto extends OmitType(IntersectionType(ReadUserDto, UserEn
     }),{toClassOnly: true})
     @ApiProperty({ example: ['72dfe827795fddb48be5e3eb']})
     roles: RoleEntity[]
-
 }
 

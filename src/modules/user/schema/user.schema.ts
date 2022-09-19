@@ -6,7 +6,7 @@ import {RoleEntity} from "../../role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
 import {AbstractEntity} from "../../../utils/abstract.entity";
 import {SchemaTransform} from "../../../utils/schema.transform";
-import {LocalFile} from "../../localFile/entities/localFile.entity";
+import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
 
 @Schema({
     toObject: {
@@ -33,7 +33,7 @@ class SchemaProperties extends AbstractEntity implements UserInterface{
 
     @Prop({
     })
-    avatar: LocalFile;
+    avatar: LocalFileEntity;
 
     @Prop({
     })

@@ -1,4 +1,4 @@
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
+import {AbstractEntity} from '../../../utils/abstract.entity'
 
 export interface LocalFileInterface extends AbstractEntity {
     filename: string;

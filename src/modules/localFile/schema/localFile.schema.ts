@@ -1,13 +1,13 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import mongoose, {Document} from "mongoose";
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
-import {LocalFile} from "../entities/localFile.entity";
+import {AbstractEntity} from "../../../utils/abstract.entity";
+import {LocalFileEntity} from "../entities/localFile.entity";
 import {LocalFileInterface} from "../interfaces/localFile.interface";
 
 @Schema({
     toObject: {
         transform: function(doc, ret, options) {
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new LocalFile()));
+            Object.setPrototypeOf(ret, Object.getPrototypeOf(new LocalFileEntity()));
         }
     },
 })

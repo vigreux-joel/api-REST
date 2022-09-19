@@ -14,7 +14,7 @@ import {
 import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
-import {LocalFile} from "../../localFile/entities/localFile.entity";
+import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -27,6 +27,7 @@ export class UserEntity extends AbstractEntity implements UserInterface {
             }
         }
         if(!contain){
+            console.log(typeof value, value)
             value.push(RoleHelper.defaultRole)
         }
         return value
@@ -53,7 +54,8 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @IsEmail()
     email: string;
 
-    avatar: LocalFile;
+    @Type(() => LocalFileEntity)
+    avatar: LocalFileEntity;
 
     @IsPhoneNumber()
     @IsOptional()
