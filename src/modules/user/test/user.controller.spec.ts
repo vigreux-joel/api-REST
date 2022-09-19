@@ -181,16 +181,16 @@ describe('UserController', () => {
   //   })
   // })
   //
-  // describe('delete', () => {
-  //   let response
-  //   beforeAll(async () => {
-  //     response = await request(app.getHttpServer())
-  //         .delete('/'+UserHelper.entityName+'/'+user.id)
-  //   })
-  //   test('return the deleted user', async () => {
-  //     expect(response.body).toEqual(user)
-  //   })
-  // })
+  describe('delete', () => {
+    let response
+    beforeAll(async () => {
+      response = await request(app.getHttpServer())
+          .delete('/'+UserHelper.entityName+'/'+user.id)
+    })
+    test('return the deleted user', async () => {
+      expect(response.body).toEqual(user)
+    })
+  })
 
   afterAll(async () => {
     await app.close();
