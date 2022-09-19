@@ -1,17 +1,13 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
-import {ApiProperty, ApiPropertyOptional} from "@nestjs/swagger";
-import {AbstractEntity} from "../../../utils/api/AbstractEntity";
-import {IsAlpha, IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength} from "class-validator";
-import mongoose, {Document} from "mongoose";
+import {AbstractEntity} from "../../../utils/abstract.entity";
+import {Document} from "mongoose";
 import {PermissionEntity} from "../entities/permission.entity";
-import {RoleEntity} from "../entities/role.entity";
 import {PermissionInterface} from "../interfaces/permission.interface";
+import {SchemaTransform} from "../../../utils/schema.transform";
 
 @Schema({
     toObject: {
-        transform: function(doc, ret, options) {
-            Object.setPrototypeOf(ret, Object.getPrototypeOf(new PermissionEntity()));
-        }
+        transform: SchemaTransform(PermissionEntity),
     },
 })
 class SchemaProperties extends AbstractEntity implements PermissionInterface{
@@ -24,14 +20,8 @@ class SchemaProperties extends AbstractEntity implements PermissionInterface{
 
     @Prop({
         required: true,
-        unique: true,
     })
     description: string
-
-    @Prop({
-        required: true,
-    })
-    category: string;
 }
 
 export type PermissionDocument = SchemaProperties & Document

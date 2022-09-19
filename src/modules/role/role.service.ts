@@ -1,13 +1,17 @@
 import {Injectable} from '@nestjs/common';
-import {RoleEntity} from "./entities/role.entity";
-import {PermissionEntity} from "./entities/permission.entity";
-import {RoleFactory} from "./role.factory";
+import {RegisterRoles} from "./abstract.permission";
+import {RoleRegister} from "./role.register";
+import {promises} from "dns";
 
 @Injectable()
 export class RoleService {
-  constructor(private roleFactory: RoleFactory) {}
+  constructor(private roleFactory: RoleRegister) {}
 
-  registerRoles(roles: {category: string, roles: object}, lock: boolean = true): Promise<void>{
+  registerRoles(roles: RegisterRoles, lock: boolean = true): void{
     return this.roleFactory.registerRoles(roles, lock)
+  }
+
+  async hasRegisterRole(): Promise<boolean>{
+    return this.roleFactory.registerFinish
   }
 }

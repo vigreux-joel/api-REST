@@ -11,7 +11,7 @@ import {
   Query,
   UseInterceptors,
   Req,
-  ClassSerializerInterceptor,
+
   UseGuards,
   UploadedFiles,
   UploadedFile,
@@ -26,18 +26,16 @@ import {UserService} from "./user.service";
 import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
 import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {TransformInterceptor} from "../../utils/api/transform.interceptor";
-import {RoleService} from "../role/role.service";
+import {TransformInterceptor} from "../../utils/transform.interceptor";
 import {ReadUserDto} from "./dto/read-user.dto";
-import {JwtAuthGuard} from "../auth/jwt-auth.guard";
-import {UserEntity} from "./entities/user.entity";
+import {JwtAuthGuardOptional} from "../auth/guards/jwt-auth.guard";
+import {AbstractEntity} from "../../utils/abstract.entity";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
 import {createStore} from "adminjs";
 
 @ApiTags((UserHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller(UserHelper.entityName)
 export class UserController {
   constructor(private readonly userService: UserService) {
@@ -79,10 +77,12 @@ export class UserController {
 
   @Get()
   // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuardOptional)
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(ReadUserDto)
   async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {
+
+    // console.log('trsrtgt',req.user)
 
     // let userTest: UserEntity = await this.userService.findOne('6304f56fc31bf25db08e55d1')
     // console.log(userTest)

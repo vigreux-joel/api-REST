@@ -1,32 +1,14 @@
 import {
   Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  HttpException,
-  HttpStatus,
-  Query,
-  UseInterceptors, UseGuards, Req, ClassSerializerInterceptor
+  UseInterceptors
 } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {RoleEntity} from "./entities/role.entity";
+import {ApiTags} from "@nestjs/swagger";
 import {RoleHelper} from "./role.helper";
 import {RoleService} from "./role.service";
-import {ApiEntityResponse} from "../../utils/api/responses/api-entity.reponses";
-import {ApiPaginatedResponse} from "../../utils/api/responses/api-paginated.response";
-import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
-import {TransformInterceptor} from "../../utils/api/transform.interceptor";
-import {LocalAuthGuard} from "../auth/guards/local-auth.guard";
-import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {TransformInterceptor} from "../../utils/transform.interceptor";
 
 @ApiTags((RoleHelper.entityName+'s').ucfirst())
 @UseInterceptors(TransformInterceptor)
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller(RoleHelper.entityName)
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
