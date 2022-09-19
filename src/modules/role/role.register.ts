@@ -10,10 +10,16 @@ import {RegisterRoles} from "./abstract.permission";
 @Injectable()
 export class RoleRegister implements OnApplicationBootstrap {
 
+
+    private registerResolve
+    registerFinish: Promise<boolean>
     private roles: Set<RoleEntity> = new Set()
     private permissions: Set<PermissionEntity> = new Set()
 
     constructor(private roleRepository: RoleRepository, private readonly permissionRepository: PermissionRepository) {
+        this.registerFinish =  new Promise((resolve) =>{
+            this.registerResolve = resolve;
+        });
     }
 
     registerRoles(roles: RegisterRoles, lock: boolean = true): void{
@@ -47,7 +53,8 @@ export class RoleRegister implements OnApplicationBootstrap {
             rolesUpdated.add(await this.registerRole(role))
         }
         this.roles = rolesUpdated
-        this.deleteUnused()
+        await this.deleteUnused()
+        this.registerResolve(true)
     }
 
 
@@ -99,8 +106,8 @@ export class RoleRegister implements OnApplicationBootstrap {
     }
 
     private async deleteUnusedRole() {
-        const legacyRoleDefault = await this.roleRepository.find({default: true})
 
+        const legacyRoleDefault = await this.roleRepository.find({default: true})
         for (const role of legacyRoleDefault) {
             let containsRole: boolean
             for (const roleRegister of this.roles) {

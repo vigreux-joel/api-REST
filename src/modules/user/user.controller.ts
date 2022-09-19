@@ -48,8 +48,8 @@ export class UserController {
   }
 
   @Get()
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuardOptional)
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuardOptional)
   @ApiOperation({summary: 'Get all ' + UserHelper.entityName + 's'})
   @ApiPaginatedResponse(ReadUserDto)
   async findAll(@Query() pageOptionsDto: PageOptionsDto, @Req() req) {

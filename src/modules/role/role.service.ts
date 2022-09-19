@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {RegisterRoles} from "./abstract.permission";
 import {RoleRegister} from "./role.register";
+import {promises} from "dns";
 
 @Injectable()
 export class RoleService {
@@ -8,5 +9,9 @@ export class RoleService {
 
   registerRoles(roles: RegisterRoles, lock: boolean = true): void{
     return this.roleFactory.registerRoles(roles, lock)
+  }
+
+  async hasRegisterRole(): Promise<boolean>{
+    return this.roleFactory.registerFinish
   }
 }
