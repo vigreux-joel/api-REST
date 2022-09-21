@@ -14,8 +14,7 @@ import {
 import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
-import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
-import {HasMimeType, IsFile, MaxFileSize} from "nestjs-form-data";
+import {FileSystemStoredFile, HasMimeType, IsFile, MaxFileSize} from "nestjs-form-data";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -61,7 +60,7 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @IsFile()
     @MaxFileSize(512000000)
     @HasMimeType(['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp', 'image/gif'])
-    avatar: LocalFileEntity;
+    avatar: FileSystemStoredFile;
 
     @IsPhoneNumber()
     @IsOptional()

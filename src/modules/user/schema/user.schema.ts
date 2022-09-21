@@ -6,7 +6,7 @@ import {RoleEntity} from "../../role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
 import {AbstractEntity} from "../../../utils/abstract.entity";
 import {SchemaTransform} from "../../../utils/schema.transform";
-import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
+import {FileSystemStoredFile} from "nestjs-form-data";
 
 @Schema({
     toObject: {
@@ -33,7 +33,7 @@ class SchemaProperties extends AbstractEntity implements UserInterface{
 
     @Prop({
     })
-    avatar: LocalFileEntity;
+    avatar: FileSystemStoredFile;
 
     @Prop({
     })

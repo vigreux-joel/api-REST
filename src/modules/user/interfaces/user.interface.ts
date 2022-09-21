@@ -1,12 +1,12 @@
 import {RoleEntity} from "../../role/entities/role.entity";
 import {AbstractEntity} from "../../../utils/abstract.entity";
-import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
+import {FileSystemStoredFile} from "nestjs-form-data";
 
 export interface UserInterface extends AbstractEntity {
     firstname: string;
     lastname: string;
     email: string;
-    avatar: LocalFileEntity;
+    avatar: FileSystemStoredFile;
     tel?: string;
     password: string;
     roles?: RoleEntity[]

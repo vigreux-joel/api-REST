@@ -41,7 +41,7 @@ export class UserController {
     autoDeleteFile: false,
     fileSystemStoragePath: "./uploadedFiles/avatars",
     limits: {
-      fileSize: 512000,
+      fileSize: 512000000,
       files: 1,
     }
   })

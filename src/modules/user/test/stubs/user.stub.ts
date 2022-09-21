@@ -1,17 +1,14 @@
 import {UserEntity} from "../../entities/user.entity";
 
 export const userStub = (): UserEntity => {
- return {
+ return <UserEntity>{
      updatedAt: new Date(),
      roles: [],
      id: 'fakeId',
      avatar: {
-         id: 'fakeAvatarId',
          mimetype: 'image/png',
-         filename: 'fake.png',
-         path: '/avatars',
-         createdAt: new Date(),
-         updatedAt: new Date(), 
+         path: './uploadedFiles/avatars',
+         size: 420,
      },
      createdAt: new Date(),
      firstname: "john",
