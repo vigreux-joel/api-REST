@@ -15,6 +15,7 @@ import {UserInterface} from "../interfaces/user.interface";
 import { RoleEntity } from "src/modules/role/entities/role.entity";
 import {RoleHelper} from "../../role/role.helper";
 import {LocalFileEntity} from "../../localFile/entities/localFile.entity";
+import {HasMimeType, IsFile, MaxFileSize} from "nestjs-form-data";
 
 export class UserEntity extends AbstractEntity implements UserInterface {
 
@@ -27,7 +28,10 @@ export class UserEntity extends AbstractEntity implements UserInterface {
             }
         }
         if(!contain){
-            console.log(typeof value, value)
+            if (typeof value === 'string'){
+                value = value.split(',')
+            }
+            console.log(value)
             value.push(RoleHelper.defaultRole)
         }
         return value
@@ -54,7 +58,9 @@ export class UserEntity extends AbstractEntity implements UserInterface {
     @IsEmail()
     email: string;
 
-    @Type(() => LocalFileEntity)
+    @IsFile()
+    @MaxFileSize(512000000)
+    @HasMimeType(['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp', 'image/gif'])
     avatar: LocalFileEntity;
 
     @IsPhoneNumber()

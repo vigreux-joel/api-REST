@@ -3,7 +3,6 @@ import {DatabaseHelper as DB} from "./database.helper";
 import {PageDto} from "../../utils/api/dto/page.dto";
 import {PageOptionsDto} from "../../utils/api/dto/page-option.dto";
 import {PageMetaDto} from "../../utils/api/dto/page-meta.dto";
-import {query} from "express";
 
 export abstract class DatabaseRepository<T extends Document> {
   protected constructor(protected readonly entityModel: Model<T>) {}

@@ -8,12 +8,14 @@ import {RoleModule} from "../role/role.module";
 import {UserSchema} from "./schema/user.schema"
 import {UserPermission} from "./user.permission";
 import {MulterModule} from "@nestjs/platform-express";
+import {NestjsFormDataModule} from "nestjs-form-data";
 
 @Module({
   imports: [
       DatabaseHelper.modelRegister(UserHelper.modelName, UserSchema),
       RoleModule,
-      MulterModule
+      MulterModule,
+      NestjsFormDataModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, UserPermission],
